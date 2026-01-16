@@ -101,8 +101,11 @@ export const ConfirmSignupEmail = ({
 };
 
 ConfirmSignupEmail.PreviewProps = {
-  confirmationUrl: 'https://locarora.com/auth/confirm?token_hash=abc123&type=signup',
-  userName: 'John',
+  // Supabase 템플릿 변수 - Dashboard에 복사할 때 이 값들이 사용됨
+  // {{ .ConfirmationURL }} - 인증 링크
+  // {{ .Email }} - 사용자 이메일
+  confirmationUrl: '{{ .ConfirmationURL }}',
+  userName: '{{ .Email }}',
 } satisfies ConfirmSignupEmailProps;
 
 export default ConfirmSignupEmail;
