@@ -57,6 +57,10 @@ interface PaymentCompleteEmailProps {
   // Currency & Locale
   currency: string;
   locale: string;
+
+  // Partner branding
+  partnerName?: string;
+  partnerLogoUrl?: string;
 }
 
 // Supabase Storage hosted image URL
@@ -93,6 +97,7 @@ const translations: Record<
     actualPaymentAmount: string;
     orderManagement: string;
     footer: string;
+    poweredBy: string;
     support: string;
     contactSupport: string;
   }
@@ -124,6 +129,7 @@ const translations: Record<
     actualPaymentAmount: "실결제금액",
     orderManagement: "예약 관리",
     footer: "본 이메일은 LOCARORA에서 자동 발송되었습니다.",
+    poweredBy: "Powered by LOCARORA",
     support: "도움이 필요하시면",
     contactSupport: "고객센터",
   },
@@ -154,6 +160,7 @@ const translations: Record<
     actualPaymentAmount: "Total Paid",
     orderManagement: "Manage Reservation",
     footer: "This email was automatically sent by LOCARORA.",
+    poweredBy: "Powered by LOCARORA",
     support: "Need help?",
     contactSupport: "Contact Support",
   },
@@ -184,6 +191,7 @@ const translations: Record<
     actualPaymentAmount: "お支払い総額",
     orderManagement: "予約管理",
     footer: "このメールはLOCARORAから自動送信されました。",
+    poweredBy: "Powered by LOCARORA",
     support: "お困りの場合は",
     contactSupport: "サポート",
   },
@@ -214,6 +222,7 @@ const translations: Record<
     actualPaymentAmount: "實際付款金額",
     orderManagement: "預約管理",
     footer: "此郵件由 LOCARORA 自動發送。",
+    poweredBy: "Powered by LOCARORA",
     support: "需要幫助嗎？",
     contactSupport: "聯繫客服",
   },
@@ -244,6 +253,7 @@ const translations: Record<
     actualPaymentAmount: "实际付款金额",
     orderManagement: "预约管理",
     footer: "此邮件由 LOCARORA 自动发送。",
+    poweredBy: "Powered by LOCARORA",
     support: "需要帮助吗？",
     contactSupport: "联系客服",
   },
@@ -336,6 +346,8 @@ export const PaymentCompleteEmail = ({
   paymentMethod,
   currency,
   locale = "en",
+  partnerName,
+  partnerLogoUrl,
 }: PaymentCompleteEmailProps) => {
   const t = translations[locale] || translations.en;
   const orderUrl = `https://locarora.com/${locale}/reservations/${reservationId}`;
@@ -350,16 +362,35 @@ export const PaymentCompleteEmail = ({
       <Preview>{t.preview}</Preview>
       <Body style={main}>
         <Container style={container}>
-          {/* Logo */}
-          <Section style={logoSection}>
-            <Img
-              src={logoUrl}
-              width="180"
-              height="40"
-              alt="LOCARORA"
-              style={logo}
-            />
-          </Section>
+          {/* Partner Header - shown when partner data is provided */}
+          {partnerName ? (
+            <Section style={partnerHeaderSection}>
+              {partnerLogoUrl ? (
+                <Img
+                  src={partnerLogoUrl}
+                  width="80"
+                  height="80"
+                  alt={partnerName}
+                  style={partnerLogoStyle}
+                />
+              ) : (
+                <div style={partnerInitial}>
+                  {partnerName.charAt(0).toUpperCase()}
+                </div>
+              )}
+              <Heading style={partnerNameHeading}>{partnerName}</Heading>
+            </Section>
+          ) : (
+            <Section style={logoSection}>
+              <Img
+                src={logoUrl}
+                width="180"
+                height="40"
+                alt="LOCARORA"
+                style={logo}
+              />
+            </Section>
+          )}
 
           <Hr style={divider} />
 
@@ -600,6 +631,18 @@ export const PaymentCompleteEmail = ({
 
           {/* Footer */}
           <Section style={footer}>
+            {partnerName && (
+              <>
+                <Img
+                  src={logoUrl}
+                  width="100"
+                  height="22"
+                  alt="LOCARORA"
+                  style={footerLogo}
+                />
+                <Text style={poweredByText}>{t.poweredBy}</Text>
+              </>
+            )}
             <Text style={footerText}>{t.footer}</Text>
             <Text style={footerText}>
               {t.support}{" "}
@@ -643,6 +686,8 @@ PaymentCompleteEmail.PreviewProps = {
   paymentMethod: "신용카드",
   currency: "KRW",
   locale: "ko",
+  partnerName: "ABC 렌탈",
+  partnerLogoUrl: undefined,
 } satisfies PaymentCompleteEmailProps;
 
 export default PaymentCompleteEmail;
@@ -1004,4 +1049,51 @@ const copyright = {
   color: "#d4d4d8",
   fontSize: "12px",
   marginTop: "16px",
+};
+
+// Partner header styles (based on team-invitation.tsx pattern)
+const partnerHeaderSection = {
+  padding: "32px 40px 24px",
+  textAlign: "center" as const,
+  backgroundColor: "#fafafa",
+};
+
+const partnerLogoStyle = {
+  margin: "0 auto 12px",
+  borderRadius: "12px",
+  objectFit: "contain" as const,
+};
+
+const partnerInitial = {
+  width: "80px",
+  height: "80px",
+  backgroundColor: "#FF6600",
+  borderRadius: "12px",
+  margin: "0 auto 12px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  color: "#ffffff",
+  fontSize: "32px",
+  fontWeight: "bold" as const,
+  lineHeight: "80px",
+  textAlign: "center" as const,
+};
+
+const partnerNameHeading = {
+  color: "#18181b",
+  fontSize: "22px",
+  fontWeight: "600",
+  margin: "0",
+};
+
+const footerLogo = {
+  margin: "0 auto 8px",
+  opacity: 0.6,
+};
+
+const poweredByText = {
+  color: "#a1a1aa",
+  fontSize: "11px",
+  margin: "0 0 12px",
 };
