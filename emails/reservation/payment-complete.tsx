@@ -646,7 +646,7 @@ export const PaymentCompleteEmail = ({
             <Text style={footerText}>{t.footer}</Text>
             <Text style={footerText}>
               {t.support}{" "}
-              <Link href="https://locarora.com/support" style={footerLink}>
+              <Link href="https://locarora.com/help" style={footerLink}>
                 {t.contactSupport}
               </Link>
             </Text>

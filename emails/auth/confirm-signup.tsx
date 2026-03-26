@@ -86,7 +86,7 @@ export const ConfirmSignupEmail = ({
             </Text>
             <Text style={footerText}>
               Need help?{" "}
-              <Link href="https://locarora.com/support" style={footerLink}>
+              <Link href="https://locarora.com/help" style={footerLink}>
                 Contact Support
               </Link>
             </Text>

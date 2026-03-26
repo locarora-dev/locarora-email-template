@@ -271,7 +271,7 @@ export const PartnerApprovalEmail = ({
             <Text style={footerText}>
               {t.support}{" "}
               <Link
-                href="https://partner.locarora.com/support"
+                href="https://locarora.com/help"
                 style={footerLink}
               >
                 {t.contactSupport}
