@@ -256,9 +256,8 @@ export const ReservationCancelledEmail = ({
 
           <Hr style={divider} />
 
-          {/* Title with Cancel Icon */}
+          {/* Title */}
           <Section style={titleSection}>
-            <Text style={cancelIcon}>✕</Text>
             <Heading style={heading}>{t.title}</Heading>
           </Section>
 
@@ -269,9 +268,9 @@ export const ReservationCancelledEmail = ({
 
             {/* Cancel Reason */}
             {cancelReason && (
-              <Section style={reasonCard}>
-                <Text style={reasonLabel}>{t.cancelReason}</Text>
-                <Text style={reasonText}>{cancelReason}</Text>
+              <Section style={reasonBox}>
+                <Text style={reasonBoxTitle}>{t.cancelReason}</Text>
+                <Text style={reasonBoxText}>{cancelReason}</Text>
               </Section>
             )}
 
@@ -483,11 +482,25 @@ const titleSection = {
   textAlign: "center" as const,
 };
 
-const cancelIcon = {
-  fontSize: "48px",
-  color: "#ef4444",
-  margin: "0 0 16px",
-  fontWeight: "bold" as const,
+const reasonBox = {
+  border: "2px solid #FF6600",
+  borderRadius: "12px",
+  padding: "20px 24px",
+  margin: "0 0 24px",
+};
+
+const reasonBoxTitle = {
+  color: "#18181b",
+  fontSize: "14px",
+  fontWeight: "600",
+  margin: "0 0 8px",
+};
+
+const reasonBoxText = {
+  color: "#3f3f46",
+  fontSize: "14px",
+  lineHeight: "1.6",
+  margin: "0",
 };
 
 const heading = {
@@ -516,27 +529,6 @@ const paragraph = {
   margin: "0 0 24px",
 };
 
-const reasonCard = {
-  backgroundColor: "#fef2f2",
-  borderRadius: "8px",
-  padding: "16px 20px",
-  margin: "0 0 24px",
-  borderLeft: "4px solid #ef4444",
-};
-
-const reasonLabel = {
-  color: "#991b1b",
-  fontSize: "13px",
-  fontWeight: "600",
-  margin: "0 0 4px",
-};
-
-const reasonText = {
-  color: "#dc2626",
-  fontSize: "14px",
-  lineHeight: "1.5",
-  margin: "0",
-};
 
 const infoSection = {
   margin: "0 0 24px",

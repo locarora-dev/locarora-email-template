@@ -234,9 +234,8 @@ export const PartnerApprovalEmail = ({
 
           <Hr style={divider} />
 
-          {/* Title with Check Icon */}
+          {/* Title */}
           <Section style={titleSection}>
-            <Text style={checkIcon}>✓</Text>
             <Heading style={heading}>{title}</Heading>
           </Section>
 
@@ -330,12 +329,6 @@ const divider = {
 const titleSection = {
   padding: "32px 40px 24px",
   textAlign: "center" as const,
-};
-
-const checkIcon = {
-  fontSize: "48px",
-  color: "#22c55e",
-  margin: "0 0 16px",
 };
 
 const heading = {

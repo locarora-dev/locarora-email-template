@@ -267,9 +267,8 @@ export const PartnerRejectionEmail = ({
 
           <Hr style={divider} />
 
-          {/* Title with Reject Icon */}
+          {/* Title */}
           <Section style={titleSection}>
-            <Text style={rejectIcon}>✕</Text>
             <Heading style={heading}>{title}</Heading>
           </Section>
 
@@ -280,9 +279,9 @@ export const PartnerRejectionEmail = ({
 
             {/* Rejection Reason */}
             {rejectionReason && (
-              <Section style={reasonCard}>
-                <Text style={reasonLabel}>{t.rejectionReasonLabel}</Text>
-                <Text style={reasonText}>{rejectionReason}</Text>
+              <Section style={reasonBox}>
+                <Text style={reasonBoxTitle}>{t.rejectionReasonLabel}</Text>
+                <Text style={reasonBoxText}>{rejectionReason}</Text>
               </Section>
             )}
 
@@ -370,13 +369,6 @@ const titleSection = {
   textAlign: "center" as const,
 };
 
-const rejectIcon = {
-  fontSize: "48px",
-  color: "#ef4444",
-  margin: "0 0 16px",
-  fontWeight: "bold" as const,
-};
-
 const heading = {
   color: "#18181b",
   fontSize: "24px",
@@ -403,25 +395,24 @@ const paragraph = {
   margin: "0 0 24px",
 };
 
-const reasonCard = {
-  backgroundColor: "#fef2f2",
-  borderRadius: "8px",
-  padding: "16px 20px",
+const reasonBox = {
+  border: "2px solid #ef4444",
+  borderRadius: "12px",
+  padding: "20px 24px",
   margin: "0 0 24px",
-  borderLeft: "4px solid #ef4444",
 };
 
-const reasonLabel = {
-  color: "#991b1b",
-  fontSize: "13px",
-  fontWeight: "600",
-  margin: "0 0 4px",
-};
-
-const reasonText = {
-  color: "#dc2626",
+const reasonBoxTitle = {
+  color: "#18181b",
   fontSize: "14px",
-  lineHeight: "1.5",
+  fontWeight: "600",
+  margin: "0 0 8px",
+};
+
+const reasonBoxText = {
+  color: "#3f3f46",
+  fontSize: "14px",
+  lineHeight: "1.6",
   margin: "0",
 };
 
