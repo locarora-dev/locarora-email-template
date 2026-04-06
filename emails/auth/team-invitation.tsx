@@ -13,7 +13,7 @@ import {
   Text,
 } from "@react-email/components";
 
-interface TeamInvitationEmailProps {
+export interface TeamInvitationEmailProps {
   partnerName: string;
   partnerLogoUrl?: string;
   inviterName: string;
@@ -41,6 +41,8 @@ const translations: Record<
     expiresMessage: (date: string) => string;
     ignoreMessage: string;
     footer: string;
+    support: string;
+    contactSupport: string;
     linkFallback: string;
   }
 > = {
@@ -56,6 +58,8 @@ const translations: Record<
     expiresMessage: (date) => `이 초대는 ${date}까지 유효합니다.`,
     ignoreMessage: "초대를 원하지 않으시면 이 이메일을 무시하셔도 됩니다.",
     footer: "본 이메일은 LOCARORA에서 발송되었습니다.",
+    support: "도움이 필요하시면",
+    contactSupport: "고객센터",
     linkFallback: "버튼이 작동하지 않으면 아래 링크를 브라우저에 복사하세요:",
   },
   en: {
@@ -71,6 +75,8 @@ const translations: Record<
     ignoreMessage:
       "If you don't want to accept this invitation, you can ignore this email.",
     footer: "This email was sent by LOCARORA.",
+    support: "Need help?",
+    contactSupport: "Contact Support",
     linkFallback:
       "If the button doesn't work, copy and paste this link into your browser:",
   },
@@ -86,6 +92,8 @@ const translations: Record<
     expiresMessage: (date) => `この招待は${date}まで有効です。`,
     ignoreMessage: "招待を希望されない場合は、このメールを無視してください。",
     footer: "このメールはLOCARORAから送信されました。",
+    support: "お困りの場合は",
+    contactSupport: "サポート",
     linkFallback:
       "ボタンが機能しない場合は、以下のリンクをブラウザにコピーしてください:",
   },
@@ -101,6 +109,8 @@ const translations: Record<
     expiresMessage: (date) => `此邀請在 ${date} 前有效。`,
     ignoreMessage: "如果您不想接受此邀請，可以忽略此郵件。",
     footer: "此郵件由 LOCARORA 發送。",
+    support: "需要幫助嗎？",
+    contactSupport: "聯繫客服",
     linkFallback: "如果按鈕無法使用，請將以下連結複製到瀏覽器：",
   },
   "zh-CN": {
@@ -115,6 +125,8 @@ const translations: Record<
     expiresMessage: (date) => `此邀请在 ${date} 前有效。`,
     ignoreMessage: "如果您不想接受此邀请，可以忽略此邮件。",
     footer: "此邮件由 LOCARORA 发送。",
+    support: "需要帮助吗？",
+    contactSupport: "联系客服",
     linkFallback: "如果按钮无法使用，请将以下链接复制到浏览器：",
   },
 };
@@ -233,6 +245,12 @@ export const TeamInvitationEmail = ({
           {/* 푸터 */}
           <Section style={footer}>
             <Text style={footerText}>{t.footer}</Text>
+            <Text style={footerText}>
+              {t.support}{" "}
+              <Link href="https://locarora.com/help" style={footerLink}>
+                {t.contactSupport}
+              </Link>
+            </Text>
             <Text style={copyright}>© 2025 LOCARORA. All rights reserved.</Text>
           </Section>
         </Container>
@@ -410,6 +428,11 @@ const footerText = {
   fontSize: "13px",
   lineHeight: "1.5",
   margin: "0 0 4px",
+};
+
+const footerLink = {
+  color: "#71717a",
+  textDecoration: "underline",
 };
 
 const copyright = {

@@ -15,22 +15,18 @@ import {
   Text,
 } from "@react-email/components";
 
-interface ReservationCancelledEmailProps {
+interface RefundApprovedEmailProps {
   customerName: string;
   reservationNumber: string;
   productName: string;
-  productImageUrl?: string;
-  cancelReason?: string;
   refundAmount: number;
   originalAmount: number;
-  refundMethod?: string;
-  pickupDate: string;
-  returnDate: string;
   currency: string;
-  locale: string;
+  refundMethod?: string;
   reservationUrl: string;
   partnerName?: string;
   partnerLogoUrl?: string;
+  locale: string;
 }
 
 const logoUrl =
@@ -38,30 +34,14 @@ const logoUrl =
 
 function formatCurrency(amount: number, currency: string): string {
   const symbols: Record<string, string> = {
-    KRW: "₩",
-    JPY: "¥",
+    KRW: "\u20a9",
+    JPY: "\u00a5",
     USD: "$",
-    CNY: "¥",
+    CNY: "\u00a5",
     TWD: "NT$",
   };
   const symbol = symbols[currency] || currency;
   return `${symbol} ${amount.toLocaleString()}`;
-}
-
-function formatDate(dateStr: string, locale: string): string {
-  const date = new Date(dateStr);
-  const localeMap: Record<string, string> = {
-    ko: "ko-KR",
-    en: "en-US",
-    ja: "ja-JP",
-    "zh-TW": "zh-TW",
-    "zh-CN": "zh-CN",
-  };
-  return date.toLocaleDateString(localeMap[locale] || "en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
 }
 
 const translations: Record<
@@ -70,13 +50,10 @@ const translations: Record<
     preview: string;
     title: string;
     greeting: (name: string) => string;
-    cancelledMessage: string;
-    cancelReason: string;
-    reservationInfo: string;
+    message: string;
+    refundInfo: string;
     reservationNo: string;
     product: string;
-    rentalPeriod: string;
-    refundInfo: string;
     originalAmount: string;
     refundAmount: string;
     refundMethod: string;
@@ -89,16 +66,14 @@ const translations: Record<
   }
 > = {
   ko: {
-    preview: "예약이 취소되었습니다",
-    title: "예약 취소",
+    preview: "환불이 승인되었습니다",
+    title: "환불 승인",
     greeting: (name) => `안녕하세요, ${name}님`,
-    cancelledMessage: "요청하신 예약이 취소되었습니다.",
-    cancelReason: "취소 사유",
-    reservationInfo: "예약 정보",
+    message:
+      "요청하신 환불이 승인되었습니다. 아래에서 환불 상세 내역을 확인하세요.",
+    refundInfo: "환불 정보",
     reservationNo: "예약번호",
     product: "상품",
-    rentalPeriod: "이용 기간",
-    refundInfo: "환불 정보",
     originalAmount: "결제 금액",
     refundAmount: "환불 금액",
     refundMethod: "환불 수단",
@@ -110,16 +85,14 @@ const translations: Record<
     poweredBy: "Powered by LOCARORA",
   },
   en: {
-    preview: "Your reservation has been cancelled",
-    title: "Reservation Cancelled",
+    preview: "Your refund has been approved",
+    title: "Refund Approved",
     greeting: (name) => `Hello, ${name}`,
-    cancelledMessage: "Your reservation has been cancelled.",
-    cancelReason: "Cancellation Reason",
-    reservationInfo: "Reservation Details",
+    message:
+      "Your refund request has been approved. Please check the refund details below.",
+    refundInfo: "Refund Details",
     reservationNo: "Reservation No.",
     product: "Product",
-    rentalPeriod: "Rental Period",
-    refundInfo: "Refund Information",
     originalAmount: "Original Amount",
     refundAmount: "Refund Amount",
     refundMethod: "Refund Method",
@@ -132,16 +105,14 @@ const translations: Record<
     poweredBy: "Powered by LOCARORA",
   },
   ja: {
-    preview: "ご予約がキャンセルされました",
-    title: "予約キャンセル",
+    preview: "返金が承認されました",
+    title: "返金承認",
     greeting: (name) => `${name}様`,
-    cancelledMessage: "ご予約がキャンセルされました。",
-    cancelReason: "キャンセル理由",
-    reservationInfo: "予約情報",
+    message:
+      "返金リクエストが承認されました。以下で返金の詳細をご確認ください。",
+    refundInfo: "返金情報",
     reservationNo: "予約番号",
     product: "商品",
-    rentalPeriod: "ご利用期間",
-    refundInfo: "返金情報",
     originalAmount: "お支払い金額",
     refundAmount: "返金金額",
     refundMethod: "返金方法",
@@ -154,16 +125,13 @@ const translations: Record<
     poweredBy: "Powered by LOCARORA",
   },
   "zh-TW": {
-    preview: "您的預約已取消",
-    title: "預約取消",
+    preview: "您的退款已獲批准",
+    title: "退款批准",
     greeting: (name) => `您好，${name}`,
-    cancelledMessage: "您的預約已被取消。",
-    cancelReason: "取消原因",
-    reservationInfo: "預約資訊",
+    message: "您的退款申請已獲批准。請查看以下退款詳情。",
+    refundInfo: "退款資訊",
     reservationNo: "預約編號",
     product: "商品",
-    rentalPeriod: "租借期間",
-    refundInfo: "退款資訊",
     originalAmount: "付款金額",
     refundAmount: "退款金額",
     refundMethod: "退款方式",
@@ -175,16 +143,13 @@ const translations: Record<
     poweredBy: "Powered by LOCARORA",
   },
   "zh-CN": {
-    preview: "您的预约已取消",
-    title: "预约取消",
+    preview: "您的退款已获批准",
+    title: "退款批准",
     greeting: (name) => `您好，${name}`,
-    cancelledMessage: "您的预约已被取消。",
-    cancelReason: "取消原因",
-    reservationInfo: "预约信息",
+    message: "您的退款申请已获批准。请查看以下退款详情。",
+    refundInfo: "退款信息",
     reservationNo: "预约编号",
     product: "商品",
-    rentalPeriod: "租借期间",
-    refundInfo: "退款信息",
     originalAmount: "付款金额",
     refundAmount: "退款金额",
     refundMethod: "退款方式",
@@ -197,26 +162,20 @@ const translations: Record<
   },
 };
 
-export const ReservationCancelledEmail = ({
+export const RefundApprovedEmail = ({
   customerName,
   reservationNumber,
   productName,
-  productImageUrl,
-  cancelReason,
   refundAmount,
   originalAmount,
-  refundMethod,
-  pickupDate,
-  returnDate,
   currency,
-  locale = "ko",
+  refundMethod,
   reservationUrl,
   partnerName,
   partnerLogoUrl,
-}: ReservationCancelledEmailProps) => {
+  locale = "ko",
+}: RefundApprovedEmailProps) => {
   const t = translations[locale] || translations.ko;
-  const formattedPickup = formatDate(pickupDate, locale);
-  const formattedReturn = formatDate(returnDate, locale);
 
   return (
     <Html>
@@ -224,7 +183,7 @@ export const ReservationCancelledEmail = ({
       <Preview>{t.preview}</Preview>
       <Body style={main}>
         <Container style={container}>
-          {/* Partner Header or LOCARORA Logo */}
+          {/* Header */}
           {partnerName ? (
             <Section style={partnerHeaderSection}>
               {partnerLogoUrl ? (
@@ -249,71 +208,47 @@ export const ReservationCancelledEmail = ({
                 width="180"
                 height="40"
                 alt="LOCARORA"
-                style={logo}
+                style={logoImg}
               />
             </Section>
           )}
 
           <Hr style={divider} />
 
-          {/* Title with Cancel Icon */}
+          {/* Title */}
           <Section style={titleSection}>
-            <Text style={cancelIcon}>✕</Text>
             <Heading style={heading}>{t.title}</Heading>
           </Section>
 
-          {/* Main Content */}
+          {/* Content */}
           <Section style={content}>
             <Text style={greeting}>{t.greeting(customerName)}</Text>
-            <Text style={paragraph}>{t.cancelledMessage}</Text>
+            <Text style={paragraph}>{t.message}</Text>
 
-            {/* Cancel Reason */}
-            {cancelReason && (
-              <Section style={reasonBox}>
-                <Text style={reasonBoxTitle}>{t.cancelReason}</Text>
-                <Text style={reasonBoxText}>{cancelReason}</Text>
-              </Section>
-            )}
-
-            {/* Reservation Info */}
-            <Section style={infoSection}>
-              <Text style={sectionTitle}>{t.reservationInfo}</Text>
-              <Hr style={sectionDivider} />
-
-              <Row style={infoRow}>
-                <Column style={labelColumn}>
-                  <Text style={label}>{t.reservationNo}</Text>
-                </Column>
-                <Column style={valueColumn}>
-                  <Text style={value}>{reservationNumber}</Text>
-                </Column>
-              </Row>
-
-              <Row style={infoRow}>
-                <Column style={labelColumn}>
-                  <Text style={label}>{t.product}</Text>
-                </Column>
-                <Column style={valueColumn}>
-                  <Text style={value}>{productName}</Text>
-                </Column>
-              </Row>
-
-              <Row style={infoRow}>
-                <Column style={labelColumn}>
-                  <Text style={label}>{t.rentalPeriod}</Text>
-                </Column>
-                <Column style={valueColumn}>
-                  <Text style={value}>
-                    {formattedPickup} — {formattedReturn}
-                  </Text>
-                </Column>
-              </Row>
-            </Section>
-
-            {/* Refund Info */}
+            {/* Refund Info Card */}
             <Section style={refundSection}>
               <Text style={sectionTitle}>{t.refundInfo}</Text>
               <Hr style={sectionDivider} />
+
+              <Row style={refundRow}>
+                <Column style={refundLabelColumn}>
+                  <Text style={refundLabel}>{t.reservationNo}</Text>
+                </Column>
+                <Column style={refundValueColumn}>
+                  <Text style={refundValue}>{reservationNumber}</Text>
+                </Column>
+              </Row>
+
+              <Row style={refundRow}>
+                <Column style={refundLabelColumn}>
+                  <Text style={refundLabel}>{t.product}</Text>
+                </Column>
+                <Column style={refundValueColumn}>
+                  <Text style={refundValue}>{productName}</Text>
+                </Column>
+              </Row>
+
+              <Hr style={refundDivider} />
 
               <Row style={refundRow}>
                 <Column style={refundLabelColumn}>
@@ -325,8 +260,6 @@ export const ReservationCancelledEmail = ({
                   </Text>
                 </Column>
               </Row>
-
-              <Hr style={refundDivider} />
 
               <Row style={refundRow}>
                 <Column style={refundLabelColumn}>
@@ -353,7 +286,7 @@ export const ReservationCancelledEmail = ({
 
             <Text style={refundNotice}>{t.refundNotice}</Text>
 
-            {/* CTA Button */}
+            {/* CTA */}
             <Section style={buttonSection}>
               <Button style={button} href={reservationUrl}>
                 {t.viewReservation}
@@ -384,7 +317,9 @@ export const ReservationCancelledEmail = ({
                 {t.contactSupport}
               </Link>
             </Text>
-            <Text style={copyright}>© 2025 LOCARORA. All rights reserved.</Text>
+            <Text style={copyrightText}>
+              &copy; 2025 LOCARORA. All rights reserved.
+            </Text>
           </Section>
         </Container>
       </Body>
@@ -392,25 +327,21 @@ export const ReservationCancelledEmail = ({
   );
 };
 
-ReservationCancelledEmail.PreviewProps = {
+RefundApprovedEmail.PreviewProps = {
   customerName: "홍길동",
   reservationNumber: "202601210635420",
   productName: "Galaxy S25 Ultra 렌탈 (3일~)",
-  productImageUrl: undefined,
-  cancelReason: "개인 사정으로 인한 취소",
   refundAmount: 53510,
   originalAmount: 53510,
-  refundMethod: "신용카드",
-  pickupDate: "2026-01-23",
-  returnDate: "2026-01-26",
   currency: "KRW",
-  locale: "ko",
+  refundMethod: "신용카드",
   reservationUrl: "https://locarora.com/ko/reservations/abc123",
   partnerName: "ABC 렌탈",
   partnerLogoUrl: undefined,
-} satisfies ReservationCancelledEmailProps;
+  locale: "ko",
+} satisfies RefundApprovedEmailProps;
 
-export default ReservationCancelledEmail;
+export default RefundApprovedEmail;
 
 // Styles
 const main = {
@@ -434,13 +365,8 @@ const logoSection = {
   textAlign: "center" as const,
 };
 
-const logo = {
+const logoImg = {
   margin: "0 auto",
-};
-
-const divider = {
-  borderColor: "#e4e4e7",
-  margin: "0",
 };
 
 const partnerHeaderSection = {
@@ -461,9 +387,6 @@ const partnerInitial = {
   backgroundColor: "#FF6600",
   borderRadius: "12px",
   margin: "0 auto 12px",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
   color: "#ffffff",
   fontSize: "32px",
   fontWeight: "bold" as const,
@@ -478,16 +401,14 @@ const partnerNameHeading = {
   margin: "0",
 };
 
+const divider = {
+  borderColor: "#e4e4e7",
+  margin: "0",
+};
+
 const titleSection = {
   padding: "32px 40px 24px",
   textAlign: "center" as const,
-};
-
-const cancelIcon = {
-  fontSize: "48px",
-  color: "#ef4444",
-  margin: "0 0 16px",
-  fontWeight: "bold" as const,
 };
 
 const heading = {
@@ -516,29 +437,11 @@ const paragraph = {
   margin: "0 0 24px",
 };
 
-const reasonBox = {
-  border: "2px solid #FF6600",
-  borderRadius: "12px",
-  padding: "20px 24px",
-  margin: "0 0 24px",
-};
-
-const reasonBoxTitle = {
-  color: "#18181b",
-  fontSize: "14px",
-  fontWeight: "600",
-  margin: "0 0 8px",
-};
-
-const reasonBoxText = {
-  color: "#3f3f46",
-  fontSize: "14px",
-  lineHeight: "1.6",
-  margin: "0",
-};
-
-const infoSection = {
-  margin: "0 0 24px",
+const refundSection = {
+  backgroundColor: "#f8f9fa",
+  borderRadius: "8px",
+  padding: "20px",
+  margin: "0 0 16px",
 };
 
 const sectionTitle = {
@@ -551,38 +454,6 @@ const sectionTitle = {
 const sectionDivider = {
   borderColor: "#18181b",
   borderWidth: "1px",
-  margin: "0 0 16px",
-};
-
-const infoRow = {
-  marginBottom: "8px",
-};
-
-const labelColumn = {
-  width: "100px",
-  verticalAlign: "top" as const,
-};
-
-const valueColumn = {
-  verticalAlign: "top" as const,
-};
-
-const label = {
-  color: "#71717a",
-  fontSize: "14px",
-  margin: "0",
-};
-
-const value = {
-  color: "#3f3f46",
-  fontSize: "14px",
-  margin: "0",
-};
-
-const refundSection = {
-  backgroundColor: "#f8f9fa",
-  borderRadius: "8px",
-  padding: "20px",
   margin: "0 0 16px",
 };
 
@@ -626,7 +497,7 @@ const refundLabelBold = {
 };
 
 const refundValueHighlight = {
-  color: "#ef4444",
+  color: "#18181b",
   fontSize: "16px",
   fontWeight: "700",
   margin: "0",
@@ -663,6 +534,17 @@ const footer = {
   textAlign: "center" as const,
 };
 
+const footerLogo = {
+  margin: "0 auto 8px",
+  opacity: 0.6,
+};
+
+const poweredByText = {
+  color: "#a1a1aa",
+  fontSize: "11px",
+  margin: "0 0 12px",
+};
+
 const footerText = {
   color: "#a1a1aa",
   fontSize: "13px",
@@ -675,19 +557,8 @@ const footerLink = {
   textDecoration: "underline",
 };
 
-const copyright = {
+const copyrightText = {
   color: "#d4d4d8",
   fontSize: "12px",
   marginTop: "16px",
-};
-
-const footerLogo = {
-  margin: "0 auto 8px",
-  opacity: 0.6,
-};
-
-const poweredByText = {
-  color: "#a1a1aa",
-  fontSize: "11px",
-  margin: "0 0 12px",
 };

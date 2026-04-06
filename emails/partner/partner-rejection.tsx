@@ -13,9 +13,9 @@ import {
   Text,
 } from "@react-email/components";
 
-type RejectionType = "partner" | "branch" | "product";
+export type RejectionType = "partner" | "branch" | "product";
 
-interface PartnerRejectionEmailProps {
+export interface PartnerRejectionEmailProps {
   type: RejectionType;
   partnerName: string;
   itemName?: string;
@@ -267,8 +267,9 @@ export const PartnerRejectionEmail = ({
 
           <Hr style={divider} />
 
-          {/* Title */}
+          {/* Title with Reject Icon */}
           <Section style={titleSection}>
+            <Text style={rejectIcon}>✕</Text>
             <Heading style={heading}>{title}</Heading>
           </Section>
 
@@ -369,6 +370,13 @@ const titleSection = {
   textAlign: "center" as const,
 };
 
+const rejectIcon = {
+  fontSize: "48px",
+  color: "#ef4444",
+  margin: "0 0 16px",
+  fontWeight: "bold" as const,
+};
+
 const heading = {
   color: "#18181b",
   fontSize: "24px",
@@ -396,7 +404,7 @@ const paragraph = {
 };
 
 const reasonBox = {
-  border: "2px solid #ef4444",
+  border: "2px solid #FF6600",
   borderRadius: "12px",
   padding: "20px 24px",
   margin: "0 0 24px",
