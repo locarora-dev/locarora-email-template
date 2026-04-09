@@ -18,8 +18,9 @@ interface ReservationCompletedEmailProps {
   reservationNumber: string;
   productName: string;
   productImageUrl?: string;
-  pickupDate: string;
-  returnDate: string;
+  rentalType?: string;
+  pickupDate?: string;
+  returnDate?: string;
   reviewUrl: string;
   reservationUrl: string;
   partnerName?: string;
@@ -152,6 +153,7 @@ export const ReservationCompletedEmail = ({
   reservationNumber,
   productName,
   productImageUrl,
+  rentalType,
   pickupDate,
   returnDate,
   reviewUrl,
@@ -161,8 +163,9 @@ export const ReservationCompletedEmail = ({
   locale = "ko",
 }: ReservationCompletedEmailProps) => {
   const t = translations[locale] || translations.ko;
-  const formattedPickup = formatDate(pickupDate, locale);
-  const formattedReturn = formatDate(returnDate, locale);
+  const isOptionOnly = rentalType === "option_only";
+  const formattedPickup = pickupDate ? formatDate(pickupDate, locale) : "";
+  const formattedReturn = returnDate ? formatDate(returnDate, locale) : "";
 
   return (
     <Html>
@@ -229,9 +232,11 @@ export const ReservationCompletedEmail = ({
                 {partnerName && (
                   <Text style={productPartnerName}>{partnerName}</Text>
                 )}
+                {!isOptionOnly && formattedPickup && (
                 <Text style={rentalPeriodStyle}>
-                  {t.rentalPeriod}: {formattedPickup} — {formattedReturn}
+                  {t.rentalPeriod}: {formattedPickup}{formattedReturn && ` — ${formattedReturn}`}
                 </Text>
+                )}
               </Section>
             </Section>
 

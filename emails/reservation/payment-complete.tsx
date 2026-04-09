@@ -15,9 +15,9 @@ import {
   Text,
 } from "@react-email/components";
 
-type MethodType = "pickup" | "delivery" | "shipping";
+export type MethodType = "pickup" | "delivery" | "shipping";
 
-interface PaymentCompleteEmailProps {
+export interface PaymentCompleteEmailProps {
   // Order info
   reservationNumber: string;
   reservationId: string;
@@ -30,19 +30,20 @@ interface PaymentCompleteEmailProps {
   quantity: number;
 
   // Rental period info (like flight ticket)
-  pickupDate: string;
-  pickupTime: string;
-  pickupMethodType: MethodType;
+  rentalType?: string;
+  pickupDate?: string;
+  pickupTime?: string;
+  pickupMethodType?: MethodType;
   pickupBranchName?: string;
   pickupAddress?: string;
 
-  returnDate: string;
-  returnTime: string;
-  returnMethodType: MethodType;
+  returnDate?: string;
+  returnTime?: string;
+  returnMethodType?: MethodType;
   returnBranchName?: string;
   returnAddress?: string;
 
-  rentalDays: number;
+  rentalDays?: number;
 
   // Payment info (locarora rental structure)
   basePrice: number;
@@ -309,7 +310,7 @@ function formatDateTime(dateStr: string, locale: string): string {
 
 function getMethodLabel(
   method: MethodType,
-  t: (typeof translations)[string]
+  t: (typeof translations)[string],
 ): string {
   const labels: Record<MethodType, string> = {
     pickup: t.methodPickup,
@@ -460,7 +461,8 @@ export const PaymentCompleteEmail = ({
             </Row>
           </Section>
 
-          {/* Rental Info - Flight Ticket Style */}
+          {/* Rental Info - Flight Ticket Style (option_only면 숨김) */}
+          {rentalType !== "option_only" && pickupDate && (
           <Section style={rentalSection}>
             <Text style={sectionTitle}>{t.rentalInfo}</Text>
             <Hr style={sectionDivider} />
@@ -474,18 +476,20 @@ export const PaymentCompleteEmail = ({
                   <Text style={timelineDate}>
                     {formatDate(pickupDate, locale)}
                   </Text>
-                  <Text style={timelineTime}>{pickupTime}</Text>
+                  <Text style={timelineTime}>{pickupTime || ""}</Text>
+                  {pickupMethodType && (
                   <Text style={methodBadge}>
                     {getMethodLabel(pickupMethodType, t)}
                   </Text>
+                  )}
                   <Text style={locationText}>{pickupLocation}</Text>
                 </Column>
 
                 {/* Arrow / Duration Column */}
                 <Column style={durationColumn}>
                   <Text style={durationDays}>
-                    {rentalDays}
-                    {t.days}
+                    {rentalDays || ""}
+                    {rentalDays ? t.days : ""}
                   </Text>
                   <Text style={arrowText}>→</Text>
                 </Column>
@@ -494,17 +498,20 @@ export const PaymentCompleteEmail = ({
                 <Column style={timelineColumn}>
                   <Text style={timelineLabelText}>{t.return}</Text>
                   <Text style={timelineDate}>
-                    {formatDate(returnDate, locale)}
+                    {returnDate ? formatDate(returnDate, locale) : "-"}
                   </Text>
-                  <Text style={timelineTime}>{returnTime}</Text>
+                  <Text style={timelineTime}>{returnTime || ""}</Text>
+                  {returnMethodType && (
                   <Text style={methodBadge}>
                     {getMethodLabel(returnMethodType, t)}
                   </Text>
+                  )}
                   <Text style={locationText}>{returnLocation}</Text>
                 </Column>
               </Row>
             </Section>
           </Section>
+          )}
 
           {/* Payment Information */}
           <Section style={infoSection}>

@@ -15,37 +15,24 @@ import {
   Text,
 } from "@react-email/components";
 
-interface ReservationCancelledPartnerEmailProps {
+type ReminderLevel = "24h" | "48h" | "5d";
+
+interface PendingReminderEmailProps {
   partnerName: string;
   partnerLogoUrl?: string;
   customerName: string;
   reservationNumber: string;
   productName: string;
-  cancelReason?: string;
-  refundAmount: number;
-  originalAmount: number;
-  currency: string;
   rentalType?: string;
   pickupDate?: string;
   returnDate?: string;
   ordersUrl: string;
+  reminderLevel: ReminderLevel;
   locale: string;
 }
 
 const logoUrl =
   "https://eafmpgmhtlhqvdpjucgb.supabase.co/storage/v1/object/public/email-assets/locarora.png";
-
-function formatCurrency(amount: number, currency: string): string {
-  const symbols: Record<string, string> = {
-    KRW: "\u20a9",
-    JPY: "\u00a5",
-    USD: "$",
-    CNY: "\u00a5",
-    TWD: "NT$",
-  };
-  const symbol = symbols[currency] || currency;
-  return `${symbol} ${amount.toLocaleString()}`;
-}
 
 function formatDate(dateStr: string, locale: string): string {
   const date = new Date(dateStr);
@@ -66,20 +53,16 @@ function formatDate(dateStr: string, locale: string): string {
 const translations: Record<
   string,
   {
-    preview: string;
-    title: string;
+    preview: Record<ReminderLevel, string>;
+    title: Record<ReminderLevel, string>;
     greeting: (name: string) => string;
-    message: string;
+    message: Record<ReminderLevel, string>;
     reservationInfo: string;
     reservationNo: string;
     product: string;
     customer: string;
     rentalPeriod: string;
-    cancelReason: string;
-    refundInfo: string;
-    originalAmount: string;
-    refundAmount: string;
-    viewOrders: string;
+    confirmNow: string;
     footer: string;
     support: string;
     contactSupport: string;
@@ -87,102 +70,140 @@ const translations: Record<
   }
 > = {
   ko: {
-    preview: "고객이 예약을 취소했습니다",
-    title: "예약 취소 알림",
+    preview: {
+      "24h": "확정 대기 중인 예약이 있습니다",
+      "48h": "예약 확정이 필요합니다",
+      "5d": "⚠️ 예약이 곧 자동 취소됩니다",
+    },
+    title: {
+      "24h": "예약 확정 대기 중",
+      "48h": "예약 확정이 필요합니다",
+      "5d": "⚠️ 예약 자동 취소 예정",
+    },
     greeting: (name) => `${name} 파트너님`,
-    message: "고객이 예약을 취소했습니다. 아래에서 상세 내역을 확인하세요.",
-    reservationInfo: "취소된 예약 정보",
+    message: {
+      "24h": "아래 예약이 24시간 넘게 확정 대기 중입니다. 확인 후 확정해주세요.",
+      "48h": "아래 예약이 48시간 넘게 확정 대기 중입니다. 빠른 확정 부탁드립니다.",
+      "5d": "아래 예약이 5일째 미확정 상태입니다. 2일 내 확정하지 않으면 자동으로 취소됩니다.",
+    },
+    reservationInfo: "대기 중인 예약",
     reservationNo: "예약번호",
     product: "상품",
     customer: "고객",
     rentalPeriod: "이용 기간",
-    cancelReason: "취소 사유",
-    refundInfo: "환불 정보",
-    originalAmount: "결제 금액",
-    refundAmount: "환불 금액",
-    viewOrders: "주문 관리로 이동",
+    confirmNow: "지금 확정하기",
     footer: "본 이메일은 LOCARORA에서 자동 발송되었습니다.",
     support: "도움이 필요하시면",
     contactSupport: "고객센터",
     poweredBy: "Powered by LOCARORA",
   },
   en: {
-    preview: "A customer has cancelled their reservation",
-    title: "Reservation Cancelled",
+    preview: {
+      "24h": "You have a reservation awaiting confirmation",
+      "48h": "Reservation confirmation needed",
+      "5d": "⚠️ Reservation will be auto-cancelled soon",
+    },
+    title: {
+      "24h": "Reservation Awaiting Confirmation",
+      "48h": "Confirmation Needed",
+      "5d": "⚠️ Auto-Cancellation Warning",
+    },
     greeting: (name) => `Dear ${name}`,
-    message:
-      "A customer has cancelled their reservation. Please check the details below.",
-    reservationInfo: "Cancelled Reservation Details",
+    message: {
+      "24h": "The reservation below has been pending for over 24 hours. Please review and confirm.",
+      "48h": "The reservation below has been pending for over 48 hours. Please confirm as soon as possible.",
+      "5d": "The reservation below has been pending for 5 days. It will be automatically cancelled if not confirmed within 2 days.",
+    },
+    reservationInfo: "Pending Reservation",
     reservationNo: "Reservation No.",
     product: "Product",
     customer: "Customer",
     rentalPeriod: "Rental Period",
-    cancelReason: "Cancellation Reason",
-    refundInfo: "Refund Information",
-    originalAmount: "Original Amount",
-    refundAmount: "Refund Amount",
-    viewOrders: "Go to Order Management",
+    confirmNow: "Confirm Now",
     footer: "This email was automatically sent by LOCARORA.",
     support: "Need help?",
     contactSupport: "Contact Support",
     poweredBy: "Powered by LOCARORA",
   },
   ja: {
-    preview: "お客様が予約をキャンセルしました",
-    title: "予約キャンセル通知",
+    preview: {
+      "24h": "確定待ちの予約があります",
+      "48h": "予約の確定が必要です",
+      "5d": "⚠️ 予約が自動キャンセルされます",
+    },
+    title: {
+      "24h": "予約確定待ち",
+      "48h": "予約の確定が必要です",
+      "5d": "⚠️ 予約自動キャンセル予定",
+    },
     greeting: (name) => `${name}パートナー様`,
-    message:
-      "お客様が予約をキャンセルしました。以下の詳細をご確認ください。",
-    reservationInfo: "キャンセルされた予約情報",
+    message: {
+      "24h": "以下の予約が24時間以上確定待ちです。ご確認の上、確定してください。",
+      "48h": "以下の予約が48時間以上確定待ちです。早急な確定をお願いいたします。",
+      "5d": "以下の予約が5日間未確定です。2日以内に確定されない場合、自動キャンセルされます。",
+    },
+    reservationInfo: "確定待ちの予約",
     reservationNo: "予約番号",
     product: "商品",
     customer: "お客様",
     rentalPeriod: "ご利用期間",
-    cancelReason: "キャンセル理由",
-    refundInfo: "返金情報",
-    originalAmount: "お支払い金額",
-    refundAmount: "返金金額",
-    viewOrders: "注文管理へ移動",
+    confirmNow: "今すぐ確定する",
     footer: "このメールはLOCARORAから自動送信されました。",
     support: "お困りの場合は",
     contactSupport: "サポート",
     poweredBy: "Powered by LOCARORA",
   },
   "zh-TW": {
-    preview: "客戶已取消預約",
-    title: "預約取消通知",
+    preview: {
+      "24h": "有待確認的預約",
+      "48h": "預約需要確認",
+      "5d": "⚠️ 預約即將自動取消",
+    },
+    title: {
+      "24h": "預約待確認",
+      "48h": "需要確認預約",
+      "5d": "⚠️ 預約即將自動取消",
+    },
     greeting: (name) => `${name} 合作夥伴您好`,
-    message: "客戶已取消預約。請查看以下詳細資訊。",
-    reservationInfo: "已取消的預約資訊",
+    message: {
+      "24h": "以下預約已等待確認超過24小時，請確認。",
+      "48h": "以下預約已等待確認超過48小時，請儘快確認。",
+      "5d": "以下預約已5天未確認。如2天內未確認，將自動取消。",
+    },
+    reservationInfo: "待確認預約",
     reservationNo: "預約編號",
     product: "商品",
     customer: "客戶",
     rentalPeriod: "租借期間",
-    cancelReason: "取消原因",
-    refundInfo: "退款資訊",
-    originalAmount: "付款金額",
-    refundAmount: "退款金額",
-    viewOrders: "前往訂單管理",
+    confirmNow: "立即確認",
     footer: "此郵件由 LOCARORA 自動發送。",
     support: "需要幫助嗎？",
     contactSupport: "聯繫客服",
     poweredBy: "Powered by LOCARORA",
   },
   "zh-CN": {
-    preview: "客户已取消预约",
-    title: "预约取消通知",
+    preview: {
+      "24h": "有待确认的预约",
+      "48h": "预约需要确认",
+      "5d": "⚠️ 预约即将自动取消",
+    },
+    title: {
+      "24h": "预约待确认",
+      "48h": "需要确认预约",
+      "5d": "⚠️ 预约即将自动取消",
+    },
     greeting: (name) => `${name} 合作伙伴您好`,
-    message: "客户已取消预约。请查看以下详细信息。",
-    reservationInfo: "已取消的预约信息",
+    message: {
+      "24h": "以下预约已等待确认超过24小时，请确认。",
+      "48h": "以下预约已等待确认超过48小时，请尽快确认。",
+      "5d": "以下预约已5天未确认。如2天内未确认，将自动取消。",
+    },
+    reservationInfo: "待确认预约",
     reservationNo: "预约编号",
     product: "商品",
     customer: "客户",
     rentalPeriod: "租借期间",
-    cancelReason: "取消原因",
-    refundInfo: "退款信息",
-    originalAmount: "付款金额",
-    refundAmount: "退款金额",
-    viewOrders: "前往订单管理",
+    confirmNow: "立即确认",
     footer: "此邮件由 LOCARORA 自动发送。",
     support: "需要帮助吗？",
     contactSupport: "联系客服",
@@ -190,29 +211,26 @@ const translations: Record<
   },
 };
 
-export const ReservationCancelledPartnerEmail = ({
+export const PendingReminderEmail = ({
   partnerName,
   partnerLogoUrl,
   customerName,
   reservationNumber,
   productName,
-  cancelReason,
-  refundAmount,
-  originalAmount,
-  currency,
   rentalType,
   pickupDate,
   returnDate,
   ordersUrl,
+  reminderLevel = "24h",
   locale = "ko",
-}: ReservationCancelledPartnerEmailProps) => {
+}: PendingReminderEmailProps) => {
   const t = translations[locale] || translations.ko;
-  const isOptionOnly = rentalType === "option_only";
+  const isUrgent = reminderLevel === "5d";
 
   return (
     <Html>
       <Head />
-      <Preview>{t.preview}</Preview>
+      <Preview>{t.preview[reminderLevel]}</Preview>
       <Body style={main}>
         <Container style={container}>
           {/* Partner Header */}
@@ -237,16 +255,18 @@ export const ReservationCancelledPartnerEmail = ({
 
           {/* Title */}
           <Section style={titleSection}>
-            <Heading style={heading}>{t.title}</Heading>
+            <Heading style={isUrgent ? headingUrgent : heading}>
+              {t.title[reminderLevel]}
+            </Heading>
           </Section>
 
           {/* Content */}
           <Section style={content}>
             <Text style={greeting}>{t.greeting(partnerName)}</Text>
-            <Text style={paragraph}>{t.message}</Text>
+            <Text style={paragraph}>{t.message[reminderLevel]}</Text>
 
             {/* Reservation Info */}
-            <Section style={infoSection}>
+            <Section style={isUrgent ? infoSectionUrgent : infoSection}>
               <Text style={sectionTitle}>{t.reservationInfo}</Text>
               <Hr style={sectionDivider} />
 
@@ -277,7 +297,7 @@ export const ReservationCancelledPartnerEmail = ({
                 </Column>
               </Row>
 
-              {!isOptionOnly && pickupDate && (
+              {rentalType !== "option_only" && pickupDate && (
               <Row style={infoRow}>
                 <Column style={labelColumn}>
                   <Text style={label}>{t.rentalPeriod}</Text>
@@ -292,48 +312,10 @@ export const ReservationCancelledPartnerEmail = ({
               )}
             </Section>
 
-            {/* Cancel Reason */}
-            {cancelReason && (
-              <Section style={reasonBox}>
-                <Text style={reasonBoxTitle}>{t.cancelReason}</Text>
-                <Text style={reasonBoxText}>{cancelReason}</Text>
-              </Section>
-            )}
-
-            {/* Refund Info */}
-            <Section style={refundSection}>
-              <Text style={sectionTitle}>{t.refundInfo}</Text>
-              <Hr style={refundSectionDivider} />
-
-              <Row style={refundRow}>
-                <Column style={refundLabelColumn}>
-                  <Text style={refundLabel}>{t.originalAmount}</Text>
-                </Column>
-                <Column style={refundValueColumn}>
-                  <Text style={refundValue}>
-                    {formatCurrency(originalAmount, currency)}
-                  </Text>
-                </Column>
-              </Row>
-
-              <Hr style={refundDivider} />
-
-              <Row style={refundRow}>
-                <Column style={refundLabelColumn}>
-                  <Text style={refundLabelBold}>{t.refundAmount}</Text>
-                </Column>
-                <Column style={refundValueColumn}>
-                  <Text style={refundValueHighlight}>
-                    {formatCurrency(refundAmount, currency)}
-                  </Text>
-                </Column>
-              </Row>
-            </Section>
-
             {/* CTA */}
             <Section style={buttonSection}>
-              <Button style={button} href={ordersUrl}>
-                {t.viewOrders}
+              <Button style={isUrgent ? buttonUrgent : button} href={ordersUrl}>
+                {t.confirmNow}
               </Button>
             </Section>
           </Section>
@@ -367,23 +349,20 @@ export const ReservationCancelledPartnerEmail = ({
   );
 };
 
-ReservationCancelledPartnerEmail.PreviewProps = {
+PendingReminderEmail.PreviewProps = {
   partnerName: "ABC 렌탈",
   partnerLogoUrl: undefined,
   customerName: "홍길동",
-  reservationNumber: "202601210635420",
+  reservationNumber: "REV-20260408-KVZE",
   productName: "Galaxy S25 Ultra 렌탈 (3일~)",
-  cancelReason: "일정 변경",
-  refundAmount: 53510,
-  originalAmount: 53510,
-  currency: "KRW",
-  pickupDate: "2026-01-23",
-  returnDate: "2026-01-26",
+  pickupDate: "2026-04-12",
+  returnDate: "2026-04-15",
   ordersUrl: "https://admin.locarora.com/ko/partner/orders",
+  reminderLevel: "5d" as ReminderLevel,
   locale: "ko",
-} satisfies ReservationCancelledPartnerEmailProps;
+} satisfies PendingReminderEmailProps;
 
-export default ReservationCancelledPartnerEmail;
+export default PendingReminderEmail;
 
 // Styles
 const main = { backgroundColor: "#f4f4f5", fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Ubuntu, sans-serif', padding: "40px 0" };
@@ -395,10 +374,12 @@ const partnerNameHeading = { color: "#18181b", fontSize: "22px", fontWeight: "60
 const divider = { borderColor: "#e4e4e7", margin: "0" };
 const titleSection = { padding: "32px 40px 24px", textAlign: "center" as const };
 const heading = { color: "#18181b", fontSize: "24px", fontWeight: "600", lineHeight: "1.4", margin: "0" };
+const headingUrgent = { color: "#dc2626", fontSize: "24px", fontWeight: "600", lineHeight: "1.4", margin: "0" };
 const content = { padding: "0 40px 32px" };
 const greeting = { color: "#18181b", fontSize: "16px", fontWeight: "600", margin: "0 0 16px" };
 const paragraph = { color: "#3f3f46", fontSize: "16px", lineHeight: "1.6", margin: "0 0 24px" };
 const infoSection = { margin: "0 0 24px" };
+const infoSectionUrgent = { margin: "0 0 24px", border: "2px solid #dc2626", borderRadius: "12px", padding: "20px" };
 const sectionTitle = { color: "#18181b", fontSize: "16px", fontWeight: "600", margin: "0 0 12px" };
 const sectionDivider = { borderColor: "#18181b", borderWidth: "1px", margin: "0 0 16px" };
 const infoRow = { marginBottom: "8px" };
@@ -407,21 +388,9 @@ const valueColumn = { verticalAlign: "top" as const };
 const label = { color: "#71717a", fontSize: "14px", margin: "0" };
 const value = { color: "#3f3f46", fontSize: "14px", margin: "0" };
 const valueBold = { color: "#18181b", fontSize: "14px", fontWeight: "600", margin: "0" };
-const reasonBox = { border: "2px solid #FF6600", borderRadius: "12px", padding: "20px 24px", margin: "0 0 24px" };
-const reasonBoxTitle = { color: "#18181b", fontSize: "14px", fontWeight: "600", margin: "0 0 8px" };
-const reasonBoxText = { color: "#3f3f46", fontSize: "14px", lineHeight: "1.6", margin: "0" };
-const refundSection = { backgroundColor: "#f8f9fa", borderRadius: "8px", padding: "20px", margin: "0 0 24px" };
-const refundSectionDivider = { borderColor: "#18181b", borderWidth: "1px", margin: "0 0 16px" };
-const refundRow = { marginBottom: "12px" };
-const refundLabelColumn = { width: "50%", verticalAlign: "top" as const };
-const refundValueColumn = { width: "50%", verticalAlign: "top" as const, textAlign: "right" as const };
-const refundLabel = { color: "#71717a", fontSize: "14px", margin: "0" };
-const refundValue = { color: "#3f3f46", fontSize: "14px", margin: "0" };
-const refundDivider = { borderColor: "#e4e4e7", margin: "8px 0 16px" };
-const refundLabelBold = { color: "#18181b", fontSize: "14px", fontWeight: "600", margin: "0" };
-const refundValueHighlight = { color: "#ef4444", fontSize: "16px", fontWeight: "700", margin: "0" };
 const buttonSection = { textAlign: "center" as const, margin: "8px 0" };
 const button = { backgroundColor: "#FF6600", borderRadius: "8px", color: "#ffffff", fontSize: "16px", fontWeight: "600", textDecoration: "none", textAlign: "center" as const, display: "inline-block", padding: "14px 32px", boxShadow: "0 2px 4px rgba(255, 102, 0, 0.2)" };
+const buttonUrgent = { backgroundColor: "#dc2626", borderRadius: "8px", color: "#ffffff", fontSize: "16px", fontWeight: "600", textDecoration: "none", textAlign: "center" as const, display: "inline-block", padding: "14px 32px", boxShadow: "0 2px 4px rgba(220, 38, 38, 0.2)" };
 const footer = { padding: "24px 40px 32px", textAlign: "center" as const };
 const footerLogo = { margin: "0 auto 8px", opacity: 0.6 };
 const poweredByText = { color: "#a1a1aa", fontSize: "11px", margin: "0 0 12px" };

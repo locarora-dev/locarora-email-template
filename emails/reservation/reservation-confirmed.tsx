@@ -15,11 +15,11 @@ import {
   Text,
 } from "@react-email/components";
 
-type MethodType = "pickup" | "delivery" | "shipping";
+export type MethodType = "pickup" | "delivery" | "shipping";
 
-type RentalType = "daily" | "timeslot";
+export type RentalType = "daily" | "timeslot" | "option_only";
 
-interface ReservationConfirmedEmailProps {
+export interface ReservationConfirmedEmailProps {
   customerName: string;
   reservationNumber: string;
   productName: string;
@@ -386,7 +386,8 @@ export const ReservationConfirmedEmail = ({
               </Row>
             </Section>
 
-            {/* Rental Info */}
+            {/* Rental Info (option_only면 숨김) */}
+            {rentalType !== "option_only" && (
             <Section style={rentalSection}>
               <Text style={sectionTitle}>{t.rentalInfo}</Text>
               <Hr style={sectionDivider} />
@@ -497,6 +498,7 @@ export const ReservationConfirmedEmail = ({
                 </Section>
               )}
             </Section>
+            )}
 
             {/* CTA Button */}
             <Section style={buttonSection}>

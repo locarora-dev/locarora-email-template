@@ -24,8 +24,9 @@ interface ReservationCancelledEmailProps {
   refundAmount: number;
   originalAmount: number;
   refundMethod?: string;
-  pickupDate: string;
-  returnDate: string;
+  rentalType?: string;
+  pickupDate?: string;
+  returnDate?: string;
   currency: string;
   locale: string;
   reservationUrl: string;
@@ -206,6 +207,7 @@ export const ReservationCancelledEmail = ({
   refundAmount,
   originalAmount,
   refundMethod,
+  rentalType,
   pickupDate,
   returnDate,
   currency,
@@ -215,8 +217,9 @@ export const ReservationCancelledEmail = ({
   partnerLogoUrl,
 }: ReservationCancelledEmailProps) => {
   const t = translations[locale] || translations.ko;
-  const formattedPickup = formatDate(pickupDate, locale);
-  const formattedReturn = formatDate(returnDate, locale);
+  const isOptionOnly = rentalType === "option_only";
+  const formattedPickup = pickupDate ? formatDate(pickupDate, locale) : "";
+  const formattedReturn = returnDate ? formatDate(returnDate, locale) : "";
 
   return (
     <Html>
@@ -298,16 +301,18 @@ export const ReservationCancelledEmail = ({
                 </Column>
               </Row>
 
+              {!isOptionOnly && formattedPickup && (
               <Row style={infoRow}>
                 <Column style={labelColumn}>
                   <Text style={label}>{t.rentalPeriod}</Text>
                 </Column>
                 <Column style={valueColumn}>
                   <Text style={value}>
-                    {formattedPickup} — {formattedReturn}
+                    {formattedPickup}{formattedReturn && ` — ${formattedReturn}`}
                   </Text>
                 </Column>
               </Row>
+              )}
             </Section>
 
             {/* Refund Info */}
