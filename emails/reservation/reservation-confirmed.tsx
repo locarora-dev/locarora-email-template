@@ -53,6 +53,11 @@ export interface ReservationConfirmedEmailProps {
 const logoUrl =
   "https://eafmpgmhtlhqvdpjucgb.supabase.co/storage/v1/object/public/email-assets/locarora.png";
 
+function formatTime(time?: string): string {
+  if (!time) return "";
+  return time.replace(/^(\d{1,2}:\d{2})(:\d{2})?$/, "$1");
+}
+
 function formatCurrency(amount: number, currency: string): string {
   const symbols: Record<string, string> = {
     KRW: "₩",
@@ -411,7 +416,7 @@ export const ReservationConfirmedEmail = ({
                     </Column>
                     <Column style={valueColumn}>
                       <Text style={valueBold}>
-                        {timeslotLabel || `${pickupTime} - ${returnTime}`}
+                        {timeslotLabel || `${formatTime(pickupTime)} - ${formatTime(returnTime)}`}
                       </Text>
                     </Column>
                   </Row>
@@ -456,7 +461,7 @@ export const ReservationConfirmedEmail = ({
                       <Text style={timelineDate}>
                         {formatDate(pickupDate, locale)}
                       </Text>
-                      <Text style={timelineTime}>{pickupTime}</Text>
+                      <Text style={timelineTime}>{formatTime(pickupTime)}</Text>
                       <Text style={methodBadge}>
                         {getMethodLabel(pickupMethodType, t)}
                       </Text>
@@ -483,7 +488,7 @@ export const ReservationConfirmedEmail = ({
                       <Text style={timelineDate}>
                         {formatDate(returnDate, locale)}
                       </Text>
-                      <Text style={timelineTime}>{returnTime}</Text>
+                      <Text style={timelineTime}>{formatTime(returnTime)}</Text>
                       <Text style={methodBadge}>
                         {getMethodLabel(returnMethodType, t)}
                       </Text>

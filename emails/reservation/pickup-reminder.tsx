@@ -39,6 +39,11 @@ interface PickupReminderEmailProps {
 const logoUrl =
   "https://eafmpgmhtlhqvdpjucgb.supabase.co/storage/v1/object/public/email-assets/locarora.png";
 
+function formatTime(time?: string): string {
+  if (!time) return "";
+  return time.replace(/^(\d{1,2}:\d{2})(:\d{2})?$/, "$1");
+}
+
 function formatDate(dateStr: string, locale: string): string {
   const date = new Date(dateStr);
   const localeMap: Record<string, string> = {
@@ -320,7 +325,7 @@ export const PickupReminderEmail = ({
                   <Text style={labelText}>{t.time}</Text>
                 </Column>
                 <Column style={valueColumn}>
-                  <Text style={valueTextBold}>{pickupTime}</Text>
+                  <Text style={valueTextBold}>{formatTime(pickupTime)}</Text>
                 </Column>
               </Row>
 
@@ -356,7 +361,7 @@ export const PickupReminderEmail = ({
                   <Text style={timelineDate}>
                     {formatDate(pickupDate, locale)}
                   </Text>
-                  <Text style={timelineTime}>{pickupTime}</Text>
+                  <Text style={timelineTime}>{formatTime(pickupTime)}</Text>
                 </Column>
 
                 {/* Duration Column */}
@@ -374,7 +379,7 @@ export const PickupReminderEmail = ({
                   <Text style={timelineDate}>
                     {formatDate(returnDate, locale)}
                   </Text>
-                  <Text style={timelineTime}>{returnTime}</Text>
+                  <Text style={timelineTime}>{formatTime(returnTime)}</Text>
                 </Column>
               </Row>
             </Section>

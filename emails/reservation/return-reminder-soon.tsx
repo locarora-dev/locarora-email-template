@@ -35,6 +35,11 @@ export interface ReturnReminderSoonEmailProps {
 const logoUrl =
   "https://eafmpgmhtlhqvdpjucgb.supabase.co/storage/v1/object/public/email-assets/locarora.png";
 
+function formatTime(time?: string): string {
+  if (!time) return "";
+  return time.replace(/^(\d{1,2}:\d{2})(:\d{2})?$/, "$1");
+}
+
 function formatDate(dateStr: string, locale: string): string {
   const date = new Date(dateStr);
   const localeMap: Record<string, string> = {
@@ -259,7 +264,7 @@ export const ReturnReminderSoonEmail = ({
 
               <Row style={infoRow}>
                 <Column style={labelColumn}><Text style={labelText}>{t.time}</Text></Column>
-                <Column style={valueColumn}><Text style={valueTextBold}>{returnTime}</Text></Column>
+                <Column style={valueColumn}><Text style={valueTextBold}>{formatTime(returnTime)}</Text></Column>
               </Row>
 
               <Row style={infoRow}>

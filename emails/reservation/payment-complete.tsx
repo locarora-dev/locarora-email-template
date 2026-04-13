@@ -261,6 +261,11 @@ const translations: Record<
 };
 
 // Helper functions
+function formatTime(time?: string): string {
+  if (!time) return "";
+  return time.replace(/^(\d{1,2}:\d{2})(:\d{2})?$/, "$1");
+}
+
 function formatCurrency(amount: number, currency: string): string {
   const symbols: Record<string, string> = {
     KRW: "₩",
@@ -476,7 +481,7 @@ export const PaymentCompleteEmail = ({
                   <Text style={timelineDate}>
                     {formatDate(pickupDate, locale)}
                   </Text>
-                  <Text style={timelineTime}>{pickupTime || ""}</Text>
+                  <Text style={timelineTime}>{formatTime(pickupTime)}</Text>
                   {pickupMethodType && (
                   <Text style={methodBadge}>
                     {getMethodLabel(pickupMethodType, t)}
@@ -500,7 +505,7 @@ export const PaymentCompleteEmail = ({
                   <Text style={timelineDate}>
                     {returnDate ? formatDate(returnDate, locale) : "-"}
                   </Text>
-                  <Text style={timelineTime}>{returnTime || ""}</Text>
+                  <Text style={timelineTime}>{formatTime(returnTime)}</Text>
                   {returnMethodType && (
                   <Text style={methodBadge}>
                     {getMethodLabel(returnMethodType, t)}
