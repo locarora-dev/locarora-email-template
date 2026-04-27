@@ -67,3 +67,11 @@ supabase/schema/
 .env.test.local
 .env.production.local
 .env.test
+.env.forholiday.local
+
+
+
+# Batch send recipient lists (sensitive customer emails) and logs
+scripts/data/*
+!scripts/data/.gitkeep
+scripts/logs/
