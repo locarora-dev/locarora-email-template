@@ -52,8 +52,10 @@ function buildLocaroraUrl(
 }
 
 // ---- Coupon data ----
+// Brand names sourced from Locarora `partners` table (per lang_code).
+// Email recipient sees their localized partner name → builds trust + recognition.
 interface Coupon {
-  brand: string;
+  brand: Record<Locale, string>;
   logoUrl: string;
   accentColor: string;
   discount: Record<Locale, string>;
@@ -62,7 +64,7 @@ interface Coupon {
 }
 
 interface Partner {
-  brand: string;
+  brand: Record<Locale, string>;
   logoUrl: string;
   description: Record<Locale, string>;
   tagLabel: Record<Locale, string>;
@@ -70,7 +72,11 @@ interface Partner {
 
 const coupons: Coupon[] = [
   {
-    brand: "Forholiday",
+    brand: {
+      ko: "포할리데이",
+      ja: "forholiday",
+      en: "forholiday",
+    },
     logoUrl:
       "https://ofpgmxsfmimhoizdnfqc.supabase.co/storage/v1/object/public/partner-images/26d65b9d-a95e-4841-94f0-ba6caed83e17/logo_1767751981429.png",
     accentColor: "#FF6600",
@@ -83,7 +89,11 @@ const coupons: Coupon[] = [
     code: "FORHOLIDAY01",
   },
   {
-    brand: "SnapRental",
+    brand: {
+      ko: "스냅렌탈",
+      ja: "スナップレンタル",
+      en: "Snap rental",
+    },
     logoUrl:
       "https://ofpgmxsfmimhoizdnfqc.supabase.co/storage/v1/object/public/partner-images/5e4df413-fbc4-4b2c-88cf-20882a54e5b8/logo_1769492634376.jpg",
     accentColor: "#FF6600",
@@ -96,7 +106,11 @@ const coupons: Coupon[] = [
     code: "R8Y3FDCN",
   },
   {
-    brand: "Lotbox",
+    brand: {
+      ko: "로트박스",
+      ja: "ロットボックス",
+      en: "Lotbox",
+    },
     logoUrl:
       "https://ofpgmxsfmimhoizdnfqc.supabase.co/storage/v1/object/public/partner-images/2be09325-0fb2-4bbc-972a-841a74f0e5e3/logo_1771470987612.png",
     accentColor: "#FF6600",
@@ -112,7 +126,11 @@ const coupons: Coupon[] = [
 
 const partners: Partner[] = [
   {
-    brand: "NC대여",
+    brand: {
+      ko: "NC대여",
+      ja: "NCレンタル",
+      en: "NC Rental",
+    },
     logoUrl:
       "https://ofpgmxsfmimhoizdnfqc.supabase.co/storage/v1/object/public/partner-images/ea9c14ca-b50e-4a36-9404-7c7513396e94/logo_1769680863760.png",
     description: {
@@ -127,7 +145,11 @@ const partners: Partner[] = [
     },
   },
   {
-    brand: "interK",
+    brand: {
+      ko: "주식회사 InterK",
+      ja: "株式会社InterK",
+      en: "InterK Co., Ltd.",
+    },
     logoUrl:
       "https://ofpgmxsfmimhoizdnfqc.supabase.co/storage/v1/object/public/partner-images/1c662635-4215-43e0-84a5-d3b7a77329a5/logo_1769775684815.png",
     description: {
@@ -337,14 +359,14 @@ const CouponTicket = ({
                 src={coupon.logoUrl}
                 width="40"
                 height="40"
-                alt={coupon.brand}
+                alt={coupon.brand[locale]}
                 style={logoImg}
               />
             </Column>
             <Column
               style={{ paddingLeft: "10px", verticalAlign: "middle" as const }}
             >
-              <Text style={brandName}>{coupon.brand}</Text>
+              <Text style={brandName}>{coupon.brand[locale]}</Text>
               <Text style={brandTagline}>LOCARORA PARTNER</Text>
             </Column>
             <Column
@@ -422,7 +444,7 @@ const CouponTicket = ({
             {coupon.discount[locale]}
           </Text>
           <Section style={stubBrandWrap}>
-            <Text style={stubBrand}>{coupon.brand}</Text>
+            <Text style={stubBrand}>{coupon.brand[locale]}</Text>
           </Section>
         </Column>
       </Row>
@@ -445,7 +467,7 @@ const PartnerIntroCard = ({
           src={partner.logoUrl}
           width="56"
           height="56"
-          alt={partner.brand}
+          alt={partner.brand[locale]}
           style={partnerLogo}
         />
       </Column>
@@ -453,7 +475,7 @@ const PartnerIntroCard = ({
         <Row>
           <Column>
             <Text className="m-partner-brand" style={partnerBrand}>
-              {partner.brand}
+              {partner.brand[locale]}
             </Text>
           </Column>
           <Column style={{ textAlign: "right" as const }}>
@@ -540,7 +562,7 @@ export const PromoLocaroraEmail = ({
           <Section style={couponListSection}>
             {coupons.map((coupon) => (
               <CouponTicket
-                key={coupon.brand}
+                key={coupon.code}
                 coupon={coupon}
                 locale={locale}
                 labels={tx}
@@ -565,7 +587,7 @@ export const PromoLocaroraEmail = ({
           <Section style={partnerListSection}>
             {partners.map((partner) => (
               <PartnerIntroCard
-                key={partner.brand}
+                key={partner.brand.en}
                 partner={partner}
                 locale={locale}
               />
