@@ -16,10 +16,20 @@ import {
 
 export type Locale = "ko" | "ja" | "en";
 
-interface PromoLocaroraEmailProps {
+export interface PromoLocaroraEmailProps {
   locale: Locale;
   customerName?: string;
   utmCampaign?: string;
+  /**
+   * Override default `utm_source` (default: "email"). Used by admin's
+   * test-send feature to render a preview with any UTM combination from
+   * the campaign_links table, not just email.
+   */
+  utmSource?: string;
+  /**
+   * Override default `utm_medium` (default: "promo_email").
+   */
+  utmMedium?: string;
 }
 
 const locaroraLogoUrl =
@@ -32,19 +42,23 @@ const LOCARORA_URL_BY_LOCALE: Record<Locale, string> = {
 };
 
 // UTM tagging — lets analytics attribute sign-ups / clicks back to this campaign.
-// `utmCampaign` is passed per-send so the same template can run multiple campaigns.
-// Differentiate `utm_content` per placement to see which link earned the click.
+// `utmCampaign` / `utmSource` / `utmMedium` passed per-send so the same template
+// can render with any UTM combination (e.g. admin test-send from Instagram link).
 const DEFAULT_UTM_CAMPAIGN = "forholiday_bts2026";
+const DEFAULT_UTM_SOURCE = "email";
+const DEFAULT_UTM_MEDIUM = "promo_email";
 
 function buildLocaroraUrl(
   locale: Locale,
   utmContent: string,
   utmCampaign: string,
+  utmSource: string,
+  utmMedium: string,
 ): string {
   const base = LOCARORA_URL_BY_LOCALE[locale];
   const params = new URLSearchParams({
-    utm_source: "email",
-    utm_medium: "promo_email",
+    utm_source: utmSource,
+    utm_medium: utmMedium,
     utm_campaign: utmCampaign,
     utm_content: utmContent,
   });
@@ -494,10 +508,24 @@ export const PromoLocaroraEmail = ({
   locale,
   customerName,
   utmCampaign = DEFAULT_UTM_CAMPAIGN,
+  utmSource = DEFAULT_UTM_SOURCE,
+  utmMedium = DEFAULT_UTM_MEDIUM,
 }: PromoLocaroraEmailProps) => {
   const tx = t[locale];
-  const ctaHref = buildLocaroraUrl(locale, "cta_button", utmCampaign);
-  const linkHref = buildLocaroraUrl(locale, "text_link", utmCampaign);
+  const ctaHref = buildLocaroraUrl(
+    locale,
+    "cta_button",
+    utmCampaign,
+    utmSource,
+    utmMedium,
+  );
+  const linkHref = buildLocaroraUrl(
+    locale,
+    "text_link",
+    utmCampaign,
+    utmSource,
+    utmMedium,
+  );
 
   return (
     <Html lang={locale}>
