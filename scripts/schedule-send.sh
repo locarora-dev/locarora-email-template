@@ -18,6 +18,7 @@ TIME="${1:-20:00}"
 CSV="${2:-scripts/data/promo-ja.csv}"
 LOCALE="${3:-ja}"
 LIMIT="${4:-200}"
+START="${5:-0}"
 
 # Get project root
 SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
@@ -51,7 +52,9 @@ echo "  Target time : $TODAY $TIME"
 echo "  Wait        : $WAIT_SECS seconds ($(printf '%dh %dm' $((WAIT_SECS/3600)) $(((WAIT_SECS%3600)/60))))"
 echo "  CSV         : $CSV"
 echo "  Locale      : $LOCALE"
+echo "  Start       : $START"
 echo "  Limit       : $LIMIT"
+echo "  Range       : recipients $START to $((START + LIMIT - 1))"
 echo "  Log         : $LOG_FILE"
 echo "========================================"
 echo ""
@@ -68,7 +71,7 @@ nohup caffeinate -d -i bash -c "
   echo \"\$(date '+%Y-%m-%d %H:%M:%S') Waiting $WAIT_SECS seconds until $TIME\" >> '$LOG_FILE'
   sleep $WAIT_SECS
   echo \"\$(date '+%Y-%m-%d %H:%M:%S') Starting batch send\" >> '$LOG_FILE'
-  npm run send:promo-batch -- '$CSV' --limit $LIMIT --locale $LOCALE >> '$LOG_FILE' 2>&1
+  npm run send:promo-batch -- '$CSV' --start $START --limit $LIMIT --locale $LOCALE >> '$LOG_FILE' 2>&1
   echo \"\$(date '+%Y-%m-%d %H:%M:%S') Finished\" >> '$LOG_FILE'
 " > /dev/null 2>&1 &
 
