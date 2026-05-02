@@ -8,7 +8,8 @@
     "export": "email export",
     "send:promo-test": "tsx scripts/send-promo-test.ts",
     "send:promo-smtp": "tsx scripts/send-promo-smtp.ts",
-    "send:promo-batch": "tsx scripts/send-promo-smtp-batch.ts"
+    "send:promo-batch": "tsx scripts/send-promo-smtp-batch.ts",
+    "send:busan-open": "tsx scripts/send-busan-open.ts"
   },
   "dependencies": {
     "@react-email/components": "1.0.4",
