@@ -19,14 +19,14 @@ CSV="${2:-scripts/data/promo-ja.csv}"
 LOCALE="${3:-ja}"
 LIMIT="${4:-200}"
 START="${5:-0}"
+DATE="${6:-$(date +%Y-%m-%d)}"
 
 # Get project root
 SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 PROJECT_ROOT="$( cd -- "$SCRIPT_DIR/.." && pwd )"
 
 # Calculate seconds until target time
-TODAY=$(date +%Y-%m-%d)
-TARGET_EPOCH=$(date -j -f "%Y-%m-%d %H:%M" "$TODAY $TIME" +%s 2>/dev/null || echo "0")
+TARGET_EPOCH=$(date -j -f "%Y-%m-%d %H:%M" "$DATE $TIME" +%s 2>/dev/null || echo "0")
 NOW_EPOCH=$(date +%s)
 
 if [ "$TARGET_EPOCH" -eq 0 ]; then
@@ -48,7 +48,7 @@ mkdir -p "$PROJECT_ROOT/scripts/logs"
 echo "========================================"
 echo "📅 Scheduled Send"
 echo "========================================"
-echo "  Target time : $TODAY $TIME"
+echo "  Target time : $DATE $TIME"
 echo "  Wait        : $WAIT_SECS seconds ($(printf '%dh %dm' $((WAIT_SECS/3600)) $(((WAIT_SECS%3600)/60))))"
 echo "  CSV         : $CSV"
 echo "  Locale      : $LOCALE"

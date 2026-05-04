@@ -35,6 +35,9 @@ export interface PromoLocaroraEmailProps {
 const locaroraLogoUrl =
   "https://eafmpgmhtlhqvdpjucgb.supabase.co/storage/v1/object/public/email-assets/locarora.png";
 
+const forholidayLogoUrl =
+  "https://ofpgmxsfmimhoizdnfqc.supabase.co/storage/v1/object/public/email-assets/forholiday.png";
+
 const LOCARORA_URL_BY_LOCALE: Record<Locale, string> = {
   ko: "https://locarora.com/ko/promotions/busan",
   ja: "https://locarora.com/ja/promotions/busan",
@@ -153,9 +156,9 @@ const partners: Partner[] = [
       en: "A rental service available across Japan via nationwide delivery.",
     },
     tagLabel: {
-      ko: "🇯🇵 일본 전국 택배",
-      ja: "🇯🇵 日本全国宅配",
-      en: "🇯🇵 Japan nationwide",
+      ko: "일본 전국 택배",
+      ja: "日本全国宅配",
+      en: "Japan nationwide",
     },
   },
   {
@@ -172,9 +175,9 @@ const partners: Partner[] = [
       en: "A rental service available across Japan via nationwide delivery.",
     },
     tagLabel: {
-      ko: "🇯🇵 일본 전국 택배",
-      ja: "🇯🇵 日本全国宅配",
-      en: "🇯🇵 Japan nationwide",
+      ko: "일본 전국 택배",
+      ja: "日本全国宅配",
+      en: "Japan nationwide",
     },
   },
 ];
@@ -216,34 +219,34 @@ const t: Record<
 > = {
   ko: {
     preview:
-      "포할리데이 파트너 로카로라에서 할인쿠폰을 받아가세요 — 6월 BTS 부산 공연장 수령/반납 가능!",
+      "포할리데이 × 로카로라 — BTS 부산 공연장 수령·반납 안내드립니다",
     heroBadge: "FORHOLIDAY × LOCARORA",
-    heroTitle: "할인 쿠폰 3장이 도착했어요",
-    heroSubtitle: "로카로라 가입 즉시 바로 사용 가능",
+    heroTitle: "포할리데이 고객님께 안내드립니다",
+    heroSubtitle: "로카로라 파트너십 + BTS 부산 공연장 수령·반납 안내",
     greeting: "안녕하세요, 포할리데이입니다.",
     thanks: "항상 포할리데이를 이용해주셔서 진심으로 감사드립니다.",
     intro1:
       "렌탈 플랫폼 로카로라와 제휴를 맺게 되어 소개해드리고 싶어서 연락드렸어요.\n로카로라는 여행·일상에서 유용한 여러 렌탈 업체들이 모여있는 플랫폼이에요.",
     intro2:
-      "포할리데이 고객님께는 가입 즉시 바로 쓸 수 있는 쿠폰을 드리고 있으니, 한번 들러봐 주세요!",
-    couponHeading: "🎫 할인 쿠폰 3장",
+      "포할리데이 고객님께는 가입 즉시 바로 쓸 수 있는 쿠폰을 드리고 있으니, 한번 들러봐 주세요.",
+    couponHeading: "쿠폰 안내",
     couponSubheading: "로카로라 가입 후 결제 시 쿠폰 코드를 입력하세요",
     couponCodeLabel: "COUPON CODE",
     coverageLabel: "COVERAGE",
-    partnerHeading: "🇯🇵 일본에서도 이용 가능해요",
+    partnerHeading: "일본에서도 이용 가능해요",
     partnerSubheading: "일본 여행·거주 중이라면 아래 파트너도 둘러보세요",
     stepsHeading: "쿠폰 사용 방법",
     step1: "로카로라 가입하기",
     step2: "원하는 상품 선택",
     step3: "결제 시 쿠폰 코드 입력",
-    btsBadge: "SPECIAL · 6월 12~13일",
+    btsBadge: "6월 12~13일",
     btsHeading: "BTS 부산 콘서트 오시나요?",
     btsBody1:
       "포할리데이·스냅렌탈·로트박스 모두 부산 공연장에서 수령·반납이 가능해요.",
-    btsBody2: "4월 30일 오픈 예정이니 사전예약을 서두르시는 걸 추천드려요!",
-    ctaHeadline: "지금 로카로라에서 쿠폰을 받아가세요",
-    cta: "로카로라 가입하고 쿠폰 받기",
-    closing: "앞으로도 포할리데이와 로카로라 모두 잘 부탁드립니다 😊",
+    btsBody2: "지금 바로 예약 가능합니다.",
+    ctaHeadline: "로카로라에서 자세히 확인해보세요",
+    cta: "로카로라에서 자세히 보기",
+    closing: "앞으로도 포할리데이와 로카로라 모두 잘 부탁드립니다.",
     signOff: "감사합니다,",
     signature: "포할리데이 드림",
     footerNotice:
@@ -252,37 +255,37 @@ const t: Record<
   },
   ja: {
     preview:
-      "ForHolidayパートナー「ロカロラ」で割引クーポンをゲット — 6月BTS釜山公演会場での受け取り・返却も可能！",
+      "ForHoliday × Locarora — BTS釜山公演 受け取り・返却のご案内",
     heroBadge: "FORHOLIDAY × LOCARORA",
-    heroTitle: "割引クーポン3枚が届きました",
-    heroSubtitle: "ロカロラ登録後、すぐに使えます",
+    heroTitle: "ForHolidayお客様へのご案内",
+    heroSubtitle: "ロカロラとの提携、BTS釜山公演会場での受け取り・返却のご案内",
     greeting: "こんにちは、ForHolidayです。",
     thanks:
       "いつもForHolidayをご利用いただき、誠にありがとうございます。",
     intro1:
       "この度、レンタルプラットフォーム「ロカロラ」と提携を結ぶことになりましたので、ぜひご紹介させてください。\nロカロラは、旅行や日常で役立つさまざまなレンタル業者が集まったプラットフォームです。",
     intro2:
-      "ForHolidayのお客様には、会員登録後すぐに使えるクーポンをご用意しています。ぜひ一度のぞいてみてください！",
-    couponHeading: "🎫 割引クーポン3枚",
+      "ForHolidayのお客様には、会員登録後すぐに使えるクーポンをご用意しています。ぜひ一度のぞいてみてください。",
+    couponHeading: "クーポンのご案内",
     couponSubheading: "ロカロラ登録後、決済時にクーポンコードを入力してください",
     couponCodeLabel: "COUPON CODE",
     coverageLabel: "COVERAGE",
-    partnerHeading: "🇯🇵 日本でもご利用いただけます",
+    partnerHeading: "日本でもご利用いただけます",
     partnerSubheading: "日本にご滞在の方は、以下のパートナーもご覧ください",
     stepsHeading: "クーポンの使い方",
     step1: "ロカロラに登録",
     step2: "ご希望の商品を選択",
     step3: "決済時にクーポンコード入力",
-    btsBadge: "SPECIAL · 6月12~13日",
+    btsBadge: "6月12~13日",
     btsHeading: "BTSの釜山コンサートに行かれますか？",
     btsBody1:
       "ForHoliday・SnapRental・Lotboxはすべて釜山公演会場での受け取り・返却に対応しています。",
     btsBody2:
-      "4月30日オープン予定ですので、事前予約をお早めにどうぞ！",
-    ctaHeadline: "今すぐロカロラでクーポンを受け取りましょう",
-    cta: "ロカロラに登録してクーポンを受け取る",
+      "現在、ご予約いただけます。",
+    ctaHeadline: "ロカロラで詳細をご確認ください",
+    cta: "ロカロラで詳細を見る",
     closing:
-      "引き続き、ForHolidayとロカロラをよろしくお願いいたします 😊",
+      "引き続き、ForHolidayとロカロラをよろしくお願いいたします。",
     signOff: "ありがとうございました、",
     signature: "ForHoliday より",
     footerNotice:
@@ -291,37 +294,37 @@ const t: Record<
   },
   en: {
     preview:
-      "Get discount coupons from ForHoliday's partner Locarora — pickup & return at the BTS Busan concert venue in June!",
+      "ForHoliday × Locarora — Pickup and Return at the BTS Busan Venue",
     heroBadge: "FORHOLIDAY × LOCARORA",
-    heroTitle: "3 discount coupons have arrived",
-    heroSubtitle: "Use instantly after signing up on Locarora",
+    heroTitle: "A note for our ForHoliday customers",
+    heroSubtitle: "Locarora partnership and BTS Busan venue pickup and return information",
     greeting: "Hello, this is ForHoliday.",
     thanks:
       "Thank you so much for always using ForHoliday — we truly appreciate your support.",
     intro1:
-      "We're excited to share that we've partnered with LOCARORA, a rental platform.\nLocarora is where you can find a variety of useful rental services for travel and everyday life.",
+      "We're writing to share that we've partnered with LOCARORA, a rental platform.\nLocarora is where you can find a variety of useful rental services for travel and everyday life.",
     intro2:
-      "As a ForHoliday customer, we have exclusive coupons ready for you to use right after signing up. Come check it out!",
-    couponHeading: "🎫 3 discount coupons",
+      "As a ForHoliday customer, we have coupons ready for you to use right after signing up. Feel free to take a look.",
+    couponHeading: "Coupon information",
     couponSubheading: "Enter the coupon code at checkout after signing up on Locarora",
     couponCodeLabel: "COUPON CODE",
     coverageLabel: "COVERAGE",
-    partnerHeading: "🇯🇵 Also available in Japan",
+    partnerHeading: "Also available in Japan",
     partnerSubheading: "If you're traveling or living in Japan, check out these partners too",
     stepsHeading: "How to use",
     step1: "Sign up for Locarora",
     step2: "Pick the item you want",
     step3: "Apply the coupon code at checkout",
-    btsBadge: "SPECIAL · JUN 12~13",
+    btsBadge: "JUN 12~13",
     btsHeading: "Going to the BTS Busan Concert?",
     btsBody1:
-      "ForHoliday, SnapRental, and Lotbox all offer pickup & return at the Busan concert venue.",
+      "ForHoliday, SnapRental, and Lotbox all offer pickup and return at the Busan concert venue.",
     btsBody2:
-      "Services open on April 30 — book in advance, it goes fast!",
-    ctaHeadline: "Claim your coupons on Locarora now",
-    cta: "Sign up for LOCARORA and get your coupons",
+      "Pickup and return at the venue is available for booking now.",
+    ctaHeadline: "See more on Locarora",
+    cta: "View details on Locarora",
     closing:
-      "We hope you continue to enjoy both ForHoliday and Locarora 😊",
+      "We hope you continue to enjoy both ForHoliday and Locarora.",
     signOff: "Thank you,",
     signature: "From ForHoliday",
     footerNotice:
@@ -330,7 +333,7 @@ const t: Record<
   },
 };
 
-// ---- Coupon Ticket ----
+// ---- Coupon Card (simplified — informational layout, low promo signal) ----
 const CouponTicket = ({
   coupon,
   locale,
@@ -340,126 +343,34 @@ const CouponTicket = ({
   locale: Locale;
   labels: (typeof t)[Locale];
 }) => {
-  const { accentColor } = coupon;
-
   return (
-    <Section style={ticketWrap}>
-      {/* Top colored strip */}
-      <Section style={{ ...topStrip, backgroundColor: accentColor }}>
-        <Row>
-          <Column style={{ width: "72%", textAlign: "center" as const }}>
-            <Text style={topStripText}>DISCOUNT COUPON</Text>
-          </Column>
-          <Column
-            style={{
-              width: "28%",
-              textAlign: "center" as const,
-              borderLeft: "1.5px dashed rgba(255, 255, 255, 0.5)",
-            }}
-          >
-            <Text style={topStripText}>COUPON</Text>
-          </Column>
-        </Row>
-      </Section>
-
-      {/* Body */}
+    <Section style={cardWrap}>
       <Row>
-        {/* ---- LEFT: MAIN ---- */}
-        <Column style={leftCol}>
-          {/* Header: logo + partner + discount pill */}
-          <Row style={{ margin: "0 0 16px" }}>
-            <Column style={{ width: "44px", verticalAlign: "middle" as const }}>
-              <Img
-                src={coupon.logoUrl}
-                width="40"
-                height="40"
-                alt={coupon.brand[locale]}
-                style={logoImg}
-              />
-            </Column>
-            <Column
-              style={{ paddingLeft: "10px", verticalAlign: "middle" as const }}
-            >
-              <Text style={brandName}>{coupon.brand[locale]}</Text>
-              <Text style={brandTagline}>LOCARORA PARTNER</Text>
-            </Column>
-            <Column
-              style={{
-                width: "96px",
-                textAlign: "right" as const,
-                verticalAlign: "middle" as const,
-              }}
-            >
-              <Text
-                style={{
-                  ...discountPill,
-                  color: accentColor,
-                  borderColor: accentColor,
-                }}
-              >
-                {coupon.discount[locale]}
-              </Text>
-            </Column>
-          </Row>
-
-          {/* HERO: coupon code */}
-          <Section
-            style={{
-              ...codeHeroBox,
-              borderColor: accentColor,
-            }}
-          >
-            <Text style={codeHeroLabel}>{labels.couponCodeLabel}</Text>
-            <Text
-              className="m-coupon-code"
-              style={{
-                ...codeHeroValue,
-                color: accentColor,
-              }}
-            >
-              {coupon.code}
-            </Text>
-          </Section>
-
-          {/* Description */}
-          <Text style={descriptionText}>{coupon.description[locale]}</Text>
+        <Column style={{ width: "44px", verticalAlign: "middle" as const }}>
+          <Img
+            src={coupon.logoUrl}
+            width="36"
+            height="36"
+            alt={coupon.brand[locale]}
+            style={logoImg}
+          />
         </Column>
-
-        {/* ---- PERFORATION ---- */}
-        <Column style={perfCol}>
-          <Text style={perfText}>
-            <span>┊</span>
-            <br />
-            <span>┊</span>
-            <br />
-            <span>┊</span>
-            <br />
-            <span>┊</span>
-            <br />
-            <span>┊</span>
-            <br />
-            <span>┊</span>
-            <br />
-            <span>┊</span>
-            <br />
-            <span>┊</span>
-          </Text>
+        <Column style={{ paddingLeft: "10px", verticalAlign: "middle" as const }}>
+          <Text style={brandName}>{coupon.brand[locale]}</Text>
+          <Text style={brandSubtitle}>{coupon.discount[locale]}</Text>
         </Column>
+      </Row>
 
-        {/* ---- RIGHT: STUB ---- */}
-        <Column style={stubCol}>
-          <Text
-            className="m-stub-discount"
-            style={{
-              ...stubDiscount,
-              color: accentColor,
-            }}
-          >
-            {coupon.discount[locale]}
-          </Text>
-          <Section style={stubBrandWrap}>
-            <Text style={stubBrand}>{coupon.brand[locale]}</Text>
-          </Section>
+      <Row style={{ marginTop: "12px" }}>
+        <Column>
+          <Text style={cardCodeLabel}>{labels.couponCodeLabel}</Text>
+          <Text style={cardCodeValue}>{coupon.code}</Text>
+        </Column>
+      </Row>
+
+      <Row style={{ marginTop: "8px" }}>
+        <Column>
+          <Text style={cardDescription}>{coupon.description[locale]}</Text>
         </Column>
       </Row>
     </Section>
@@ -549,6 +460,13 @@ export const PromoLocaroraEmail = ({
         <Container style={container}>
           {/* Hero */}
           <Section style={hero}>
+            <Img
+              src={forholidayLogoUrl}
+              width="140"
+              height="29"
+              alt="Forholiday"
+              style={heroLogo}
+            />
             <Text style={heroBadge}>{tx.heroBadge}</Text>
             <Heading className="m-hero-title" style={heroTitle}>
               {tx.heroTitle}
@@ -734,38 +652,44 @@ const container = {
   overflow: "hidden",
 };
 
-// ---- Hero ----
+// ---- Hero (Tier 3: removed gradient, white background, subdued tone) ----
 const hero = {
-  background:
-    "linear-gradient(135deg, #FF6600 0%, #FF8C42 50%, #FFA76A 100%)",
-  backgroundColor: "#FF6600",
-  padding: "48px 40px 40px",
-  textAlign: "center" as const,
+  backgroundColor: "#ffffff",
+  borderBottom: "1px solid #e4e4e7",
+  padding: "32px 40px 24px",
+  textAlign: "left" as const,
+};
+
+const heroLogo = {
+  display: "block",
+  margin: "0 0 14px",
+  height: "auto",
+  maxWidth: "140px",
 };
 
 const heroBadge = {
-  color: "rgba(255, 255, 255, 0.9)",
-  fontSize: "12px",
-  fontWeight: "700",
-  letterSpacing: "3px",
-  margin: "0 0 12px",
+  color: "#71717a",
+  fontSize: "11px",
+  fontWeight: "600",
+  letterSpacing: "1.5px",
+  margin: "0 0 8px",
   textTransform: "uppercase" as const,
 };
 
 const heroTitle = {
-  color: "#ffffff",
-  fontSize: "26px",
-  fontWeight: "800",
-  lineHeight: "1.3",
-  margin: "0 0 10px",
-  letterSpacing: "-0.5px",
+  color: "#18181b",
+  fontSize: "22px",
+  fontWeight: "700",
+  lineHeight: "1.35",
+  margin: "0 0 6px",
+  letterSpacing: "-0.3px",
 };
 
 const heroSubtitle = {
-  color: "rgba(255, 255, 255, 0.95)",
+  color: "#52525b",
   fontSize: "14px",
-  fontWeight: "500",
-  lineHeight: "1.5",
+  fontWeight: "400",
+  lineHeight: "1.55",
   margin: "0",
 };
 
@@ -813,6 +737,50 @@ const ticketWrap = {
   overflow: "hidden",
   margin: "0 0 16px",
   boxShadow: "0 2px 8px rgba(0, 0, 0, 0.06)",
+};
+
+// ---- Simplified card (Tier 3) ----
+const cardWrap = {
+  backgroundColor: "#ffffff",
+  border: "1px solid #e4e4e7",
+  borderRadius: "10px",
+  padding: "16px 16px 14px",
+  margin: "0 0 12px",
+};
+
+const brandSubtitle = {
+  color: "#71717a",
+  fontSize: "12px",
+  fontWeight: "600",
+  margin: "0",
+  letterSpacing: "0.1px",
+};
+
+const cardCodeLabel = {
+  color: "#a1a1aa",
+  fontSize: "10px",
+  fontWeight: "700",
+  letterSpacing: "1.5px",
+  textTransform: "uppercase" as const,
+  margin: "0 0 2px",
+};
+
+const cardCodeValue = {
+  color: "#18181b",
+  fontSize: "16px",
+  fontWeight: "700",
+  fontFamily: '"SF Mono", "Monaco", "Menlo", monospace',
+  letterSpacing: "1px",
+  margin: "0",
+  lineHeight: "1.2",
+};
+
+const cardDescription = {
+  color: "#52525b",
+  fontSize: "12px",
+  fontWeight: "400",
+  lineHeight: "1.5",
+  margin: "0",
 };
 
 const topStrip = {
@@ -1102,35 +1070,31 @@ const btsSectionWrap = {
 };
 
 const btsSection = {
-  background: "linear-gradient(135deg, #1e1b4b 0%, #4c1d95 100%)",
-  backgroundColor: "#4c1d95",
-  borderRadius: "12px",
-  padding: "24px 22px",
+  backgroundColor: "#fafafa",
+  border: "1px solid #e4e4e7",
+  borderRadius: "10px",
+  padding: "16px 18px",
 };
 
 const btsBadge = {
   display: "inline-block",
-  backgroundColor: "rgba(255, 255, 255, 0.15)",
-  color: "#fbbf24",
-  fontSize: "10px",
-  fontWeight: "800",
-  letterSpacing: "2px",
-  padding: "4px 10px",
-  borderRadius: "999px",
-  margin: "0 0 10px",
-  textTransform: "uppercase" as const,
+  color: "#71717a",
+  fontSize: "11px",
+  fontWeight: "600",
+  letterSpacing: "0.5px",
+  margin: "0 0 6px",
 };
 
 const btsTitle = {
-  color: "#ffffff",
-  fontSize: "18px",
-  fontWeight: "800",
-  lineHeight: "1.3",
-  margin: "0 0 10px",
+  color: "#18181b",
+  fontSize: "16px",
+  fontWeight: "700",
+  lineHeight: "1.35",
+  margin: "0 0 8px",
 };
 
 const btsText = {
-  color: "rgba(255, 255, 255, 0.9)",
+  color: "#52525b",
   fontSize: "13px",
   lineHeight: "1.6",
   margin: "0 0 4px",
@@ -1154,26 +1118,23 @@ const buttonSection = {
 };
 
 const button = {
-  backgroundColor: "#FF6600",
-  borderRadius: "10px",
-  color: "#ffffff",
-  fontSize: "15px",
-  fontWeight: "700",
-  textDecoration: "none",
+  color: "#0066cc",
+  fontSize: "14px",
+  fontWeight: "600",
+  textDecoration: "underline",
   textAlign: "center" as const,
   display: "inline-block",
-  padding: "15px 40px",
-  boxShadow: "0 4px 14px rgba(255, 102, 0, 0.35)",
+  padding: "0",
 };
 
 const ctaLinkText = {
   textAlign: "center" as const,
-  margin: "14px 0 0",
+  margin: "10px 0 0",
   fontSize: "13px",
 };
 
 const ctaLink = {
-  color: "#FF6600",
+  color: "#0066cc",
   textDecoration: "underline",
 };
 

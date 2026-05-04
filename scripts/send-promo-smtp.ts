@@ -20,6 +20,7 @@
  *   SMTP_FROM  — (optional) "Forholiday <noreply@forholiday.com>"; defaults to SMTP_USER
  */
 
+import fsSync from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import dotenv from "dotenv";
@@ -27,17 +28,25 @@ import nodemailer from "nodemailer";
 import { render } from "@react-email/render";
 import { PromoLocaroraEmail } from "../emails/forholiday/promo-locarora";
 
+// Mirror the batch script's env loading: prefer forholiday project's
+// .env.local (where RESEND_SMTP_* and Gmail SMTP_* both live), fall back
+// to a local sibling file for portability.
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const envPath = path.resolve(__dirname, "../.env.forholiday.local");
+const FORHOLIDAY_ENV =
+  process.env.FORHOLIDAY_ENV_PATH ||
+  "/Users/forholiday/Desktop/manager/forholiday/.env.local";
+const LOCAL_FALLBACK_ENV = path.resolve(__dirname, "../.env.forholiday.local");
+const envPath = fsSync.existsSync(FORHOLIDAY_ENV)
+  ? FORHOLIDAY_ENV
+  : LOCAL_FALLBACK_ENV;
 dotenv.config({ path: envPath });
 
-const {
-  SMTP_HOST,
-  SMTP_PORT,
-  SMTP_USER,
-  SMTP_PASS,
-  SMTP_FROM,
-} = process.env;
+// Prefer RESEND_SMTP_* vars; fall back to legacy SMTP_* (Gmail).
+const SMTP_HOST = process.env.RESEND_SMTP_HOST || process.env.SMTP_HOST;
+const SMTP_PORT = process.env.RESEND_SMTP_PORT || process.env.SMTP_PORT;
+const SMTP_USER = process.env.RESEND_SMTP_USER || process.env.SMTP_USER;
+const SMTP_PASS = process.env.RESEND_SMTP_PASS || process.env.SMTP_PASS;
+const SMTP_FROM = process.env.RESEND_SMTP_FROM || process.env.SMTP_FROM;
 
 if (!SMTP_HOST || !SMTP_PORT || !SMTP_USER || !SMTP_PASS) {
   console.error(
@@ -63,9 +72,9 @@ if (!to) {
 }
 
 const subjects: Record<"ko" | "ja" | "en", string> = {
-  ko: "[갤럭시렌탈] 🎁 포할리데이 고객님께 드리는 로카로라 할인쿠폰 — 6월 BTS 부산 공연장 수령/반납 가능!",
-  ja: "[ギャラクシーレンタル] 🎁 ForHolidayお客様限定 — ロカロラ割引クーポンをプレゼント（6月BTS釜山公演会場での受け取り・返却も可能！）",
-  en: "[Galaxy Rental] 🎁 A Gift from ForHoliday — Locarora Discount Coupons (Pickup & Return at BTS Busan Venue in June!)",
+  ko: "포할리데이 × 로카로라 — BTS 부산 공연장 수령·반납 안내드립니다",
+  ja: "ForHoliday × Locarora — BTS釜山公演 受け取り・返却のご案内",
+  en: "ForHoliday × Locarora — Pickup and Return at the BTS Busan Venue",
 };
 
 async function main() {
@@ -86,7 +95,6 @@ async function main() {
   const html = await render(
     PromoLocaroraEmail({
       locale,
-      customerName: "홍길동",
       utmCampaign,
       utmSource: "email",
       utmMedium: "promo_email",

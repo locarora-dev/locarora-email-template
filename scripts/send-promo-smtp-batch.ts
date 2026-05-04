@@ -57,14 +57,15 @@ const loadedEnv = fsSync.existsSync(FORHOLIDAY_ENV)
   : LOCAL_FALLBACK_ENV;
 dotenv.config({ path: loadedEnv });
 
-const {
-  SMTP_HOST,
-  SMTP_PORT,
-  SMTP_USER,
-  SMTP_PASS,
-  SMTP_SECURE,
-  SMTP_FROM,
-} = process.env;
+// Prefer RESEND_SMTP_* vars (added for forholidayg.com promo campaign).
+// Falls back to legacy SMTP_* (Gmail) if Resend block absent. Lets ops swap
+// providers by toggling env presence — no code change needed.
+const SMTP_HOST = process.env.RESEND_SMTP_HOST || process.env.SMTP_HOST;
+const SMTP_PORT = process.env.RESEND_SMTP_PORT || process.env.SMTP_PORT;
+const SMTP_USER = process.env.RESEND_SMTP_USER || process.env.SMTP_USER;
+const SMTP_PASS = process.env.RESEND_SMTP_PASS || process.env.SMTP_PASS;
+const SMTP_SECURE = process.env.RESEND_SMTP_SECURE || process.env.SMTP_SECURE;
+const SMTP_FROM = process.env.RESEND_SMTP_FROM || process.env.SMTP_FROM;
 
 if (!SMTP_HOST || !SMTP_PORT || !SMTP_USER || !SMTP_PASS) {
   console.error(`✘ SMTP credentials missing.
@@ -214,9 +215,9 @@ function parseList(content: string): Recipient[] {
 // ─────────────────────────────────────────────────────────────
 
 const SUBJECTS: Record<"ko" | "ja" | "en", string> = {
-  ko: "[갤럭시렌탈] 🎁 포할리데이 고객님께 드리는 로카로라 할인쿠폰 — 6월 BTS 부산 공연장 수령/반납 가능!",
-  ja: "[ギャラクシーレンタル] 🎁 ForHolidayお客様限定 — ロカロラ割引クーポンをプレゼント（6月BTS釜山公演会場での受け取り・返却も可能！）",
-  en: "[Galaxy Rental] 🎁 A Gift from ForHoliday — Locarora Discount Coupons (Pickup & Return at BTS Busan Venue in June!)",
+  ko: "포할리데이 × 로카로라 — BTS 부산 공연장 수령·반납 안내드립니다",
+  ja: "ForHoliday × Locarora — BTS釜山公演 受け取り・返却のご案内",
+  en: "ForHoliday × Locarora — Pickup and Return at the BTS Busan Venue",
 };
 
 // ─────────────────────────────────────────────────────────────
@@ -427,10 +428,10 @@ async function main() {
       unsubscribeUrl,
     );
 
-    // Use HTTPS endpoint for List-Unsubscribe header when available — Gmail
-    // prefers HTTPS over mailto for one-click. Fallback: keep mailto.
+    // Prefer HTTPS one-click for List-Unsubscribe (Gmail preference). Fallback
+    // to mailto only when no HMAC secret is configured.
     const listUnsubscribeHeader = unsubSecret
-      ? `<${unsubscribeUrl}>, <mailto:forholidayg@gmail.com?subject=unsubscribe>`
+      ? `<${unsubscribeUrl}>`
       : "<mailto:forholidayg@gmail.com?subject=unsubscribe>";
 
     try {
@@ -444,8 +445,8 @@ async function main() {
         headers: {
           "List-Unsubscribe": listUnsubscribeHeader,
           "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
-          "X-Entity-Ref-ID": `forholiday-promo-${args.campaign}-${globalIdx}-${Date.now()}`,
-          "X-Mailer": "Forholiday Promo Batch v1.0",
+          "X-Entity-Ref-ID": `forholiday-bts-${args.campaign}-${globalIdx}-${Date.now()}`,
+          "X-Mailer": "Forholiday Mailer",
         },
       });
 

@@ -29,7 +29,7 @@ const from =
 const to = process.argv[2] || "forholidayg@gmail.com";
 const utmCampaign = process.argv[3] || "forholiday_bts2026";
 const subject =
-  "[갤럭시렌탈] 🎁 포할리데이 고객님께 드리는 로카로라 할인쿠폰 — 6월 BTS 부산 공연장 수령/반납 가능!";
+  "포할리데이 × 로카로라 — BTS 부산 공연장 수령·반납 안내드립니다";
 
 if (!apiKey) {
   console.error(`✘ RESEND_API_KEY not found at ${adminEnvPath}`);
@@ -40,7 +40,6 @@ async function main() {
   const html = await render(
     PromoLocaroraEmail({
       locale: "ko",
-      customerName: "홍길동",
       utmCampaign,
     }),
   );
