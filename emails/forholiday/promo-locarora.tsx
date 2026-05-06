@@ -1118,13 +1118,15 @@ const buttonSection = {
 };
 
 const button = {
-  color: "#0066cc",
+  color: "#ffffff",
   fontSize: "14px",
   fontWeight: "600",
-  textDecoration: "underline",
+  textDecoration: "none",
   textAlign: "center" as const,
   display: "inline-block",
-  padding: "0",
+  padding: "12px 28px",
+  borderRadius: "8px",
+  backgroundColor: "#18181b",
 };
 
 const ctaLinkText = {
