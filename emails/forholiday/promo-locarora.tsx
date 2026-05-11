@@ -492,6 +492,20 @@ export const PromoLocaroraEmail = ({
             </Text>
           </Section>
 
+          {/* Primary CTA — moved above coupon section so users can click
+              early without scrolling. Bottom CTA removed (redundancy increases
+              promo signal density). */}
+          <Section style={ctaSection}>
+            <Text className="m-cta-headline" style={ctaHeadline}>
+              {tx.ctaHeadline}
+            </Text>
+            <Section style={buttonSection}>
+              <Button style={button} href={ctaHref}>
+                {tx.cta}
+              </Button>
+            </Section>
+          </Section>
+
           {/* Coupon section heading */}
           <Section style={sectionHeadingWrap}>
             <Heading
@@ -573,7 +587,7 @@ export const PromoLocaroraEmail = ({
             </Section>
           </Section>
 
-          {/* Closing (moved above CTA to avoid Gmail signature-trim) */}
+          {/* Closing — signature at the natural end of the email body */}
           <Section style={closingSection}>
             <Text className="m-paragraph" style={paragraph}>
               {tx.closing}
@@ -581,18 +595,6 @@ export const PromoLocaroraEmail = ({
             <Text className="m-paragraph" style={paragraph}>
               {tx.signOff} {tx.signature}
             </Text>
-          </Section>
-
-          {/* CTA (final action — placed last so Gmail doesn't see signature at end) */}
-          <Section style={ctaSection}>
-            <Text className="m-cta-headline" style={ctaHeadline}>
-              {tx.ctaHeadline}
-            </Text>
-            <Section style={buttonSection}>
-              <Button style={button} href={ctaHref}>
-                {tx.cta}
-              </Button>
-            </Section>
             <Text style={ctaLinkText}>
               <Link href={linkHref} style={ctaLink}>
                 locarora.com

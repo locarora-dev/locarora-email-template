@@ -72,9 +72,9 @@ if (!to) {
 }
 
 const subjects: Record<"ko" | "ja" | "en", string> = {
-  ko: "포할리데이 × 로카로라 — BTS 부산 공연장 수령·반납 안내드립니다",
-  ja: "ForHoliday × Locarora — BTS釜山公演 受け取り・返却のご案内",
-  en: "ForHoliday × Locarora — Pickup and Return at the BTS Busan Venue",
+  ko: "BTS 부산 공연장 수령·반납 가능 — 포할리데이 회원 안내",
+  ja: "BTS釜山公演会場 受け取り・返却可能 — ForHoliday会員様へのご案内",
+  en: "BTS Busan venue pickup & return available — A note for ForHoliday members",
 };
 
 async function main() {

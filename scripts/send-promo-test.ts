@@ -29,7 +29,7 @@ const from =
 const to = process.argv[2] || "forholidayg@gmail.com";
 const utmCampaign = process.argv[3] || "forholiday_bts2026";
 const subject =
-  "포할리데이 × 로카로라 — BTS 부산 공연장 수령·반납 안내드립니다";
+  "BTS 부산 공연장 수령·반납 가능 — 포할리데이 회원 안내";
 
 if (!apiKey) {
   console.error(`✘ RESEND_API_KEY not found at ${adminEnvPath}`);
